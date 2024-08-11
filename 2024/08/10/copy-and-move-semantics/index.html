@@ -22,15 +22,15 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="前置知识：左值与右值表达式值类别的简单入门任何一个学过C++的人都能轻松地指出下面这两行代码中哪一行有错误： 1234int x &#x3D; 0;x &#x3D; 5;	&#x2F;&#x2F;显然正确5 &#x3D; x;	&#x2F;&#x2F;显然错误  但是并不是每一个人都能精确的描述出为什么x &#x3D; 5就是合理的而5 &#x3D; x显然错误，对于那些新手来说，他们可能会总结出一个模糊的规律：  赋值语句（即&#x3D;）的左侧只能为变量 赋值语句的右侧可以为变量或者一个值">
+        <meta name="description" content="前置知识：左值与右值表达式值类别的简单入门任何一个学过C++的人都能轻松地指出下面这两行代码中哪一行有错误： 1234int x &#x3D; 0;x &#x3D; 42;	&#x2F;&#x2F;显然正确42 &#x3D; x;	&#x2F;&#x2F;显然错误  但是并不是每一个人都能精确的描述出为什么x &#x3D; 5就是合理的而5 &#x3D; x显然错误，对于那些新手来说，他们可能会总结出一个模糊的规律：  赋值语句（即&#x3D;）的左侧只能为变量 赋值语句的右侧可以为变量或者一个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="通俗解释C++中的复制和移动语义（原创）">
 <meta property="og:url" content="https://minecraft1248.github.io/2024/08/10/copy-and-move-semantics/index.html">
 <meta property="og:site_name" content="nothing here.">
-<meta property="og:description" content="前置知识：左值与右值表达式值类别的简单入门任何一个学过C++的人都能轻松地指出下面这两行代码中哪一行有错误： 1234int x &#x3D; 0;x &#x3D; 5;	&#x2F;&#x2F;显然正确5 &#x3D; x;	&#x2F;&#x2F;显然错误  但是并不是每一个人都能精确的描述出为什么x &#x3D; 5就是合理的而5 &#x3D; x显然错误，对于那些新手来说，他们可能会总结出一个模糊的规律：  赋值语句（即&#x3D;）的左侧只能为变量 赋值语句的右侧可以为变量或者一个值">
+<meta property="og:description" content="前置知识：左值与右值表达式值类别的简单入门任何一个学过C++的人都能轻松地指出下面这两行代码中哪一行有错误： 1234int x &#x3D; 0;x &#x3D; 42;	&#x2F;&#x2F;显然正确42 &#x3D; x;	&#x2F;&#x2F;显然错误  但是并不是每一个人都能精确的描述出为什么x &#x3D; 5就是合理的而5 &#x3D; x显然错误，对于那些新手来说，他们可能会总结出一个模糊的规律：  赋值语句（即&#x3D;）的左侧只能为变量 赋值语句的右侧可以为变量或者一个">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-08-10T15:41:19.000Z">
-<meta property="article:modified_time" content="2024-08-11T05:24:52.742Z">
+<meta property="article:modified_time" content="2024-08-11T12:19:26.860Z">
 <meta property="article:author" content="Minecraft1248">
 <meta property="article:tag" content="C++ 原创 C++11">
 <meta name="twitter:card" content="summary">
@@ -599,8 +599,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-11 13:24:52</span>
-            <span class="mobile">2024-08-11 13:24:52</span>
+            <span class="desktop">2024-08-11 20:19:26</span>
+            <span class="mobile">2024-08-11 20:19:26</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -639,7 +639,7 @@
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
             <h1 id="前置知识：左值与右值"><a href="#前置知识：左值与右值" class="headerlink" title="前置知识：左值与右值"></a>前置知识：左值与右值</h1><h2 id="表达式值类别的简单入门"><a href="#表达式值类别的简单入门" class="headerlink" title="表达式值类别的简单入门"></a>表达式值类别的简单入门</h2><p>任何一个学过C++的人都能轻松地指出下面这两行代码中哪一行有错误：</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">x = <span class="number">5</span>;	<span class="comment">//显然正确</span></span><br><span class="line"><span class="number">5</span> = x;	<span class="comment">//显然错误</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">x = <span class="number">42</span>;	<span class="comment">//显然正确</span></span><br><span class="line"><span class="number">42</span> = x;	<span class="comment">//显然错误</span></span><br></pre></td></tr></table></figure></div>
 
 <p>但是并不是每一个人都能精确的描述出为什么<code>x = 5</code>就是合理的而<code>5 = x</code>显然错误，对于那些新手来说，他们可能会总结出一个模糊的规律：</p>
 <ul>
@@ -648,17 +648,47 @@
 </ul>
 <p>这个规律很模糊，也很不精确。要想真正的弄清楚这个问题，我们就要从一个关键点开始思考：<strong>变量和值之间最为本质的区别是什么？</strong></p>
 <p>答案很简单：有没有<strong>稳定不变</strong>的内存地址。</p>
-<p>一个变量在其生命周期中的内存地址很明显是不变的，而对于一个值而言（就像上述代码中的那个<code>5</code>）其在内存中的存在很显然是非常短暂的（编译器甚至可以通过优化让它们不占用任何内存）。而赋值语句的作用可以简单理解为将一个值写入内存中的一片区域，所以被写入的那一部分必须拥有稳定不变的内存地址，而对于需要写入的那个值则没有这类要求。这就引出了一个重要的概念：表达式的<strong>值类别</strong>（value category）。值类别可以简单地分为两类：<strong>左值</strong>（lvalue，即left value）与<strong>右值</strong>（rvalue，即right value）。而这两个值类别的名称来源也很容易理解，<strong>左值</strong>就是可以在<code>=</code>左侧的值，而<strong>右值</strong>则是在<code>=</code>右侧的值。</p>
-<p>所以一开始的那个问题也就很好回答了：<code>5 = x</code>之所以错误，是由于<code>5</code>作为一个数字字面量，它没有确定的内存地址，是一个右值，而赋值语句的左侧需要的是一个左值，所以这个语句显然错误。</p>
+<p>一个变量在其生命周期中的内存地址很明显是不变的，而对于一个值而言（就像上述代码中的那个<code>42</code>）其在内存中的存在很显然是非常短暂的（编译器甚至可以通过优化让它们不占用任何内存）。而赋值语句的作用可以简单理解为将一个值写入内存中的一片区域，所以被写入的那一部分必须拥有稳定不变的内存地址，而对于需要写入的那个值则没有这类要求。又或者从代码的层面来讲，一个表达式是不是代表了一个确定的变量或函数的标识符。这就引出了一个重要的概念：表达式的<strong>值类别</strong>（value category）。值类别可以简单地分为两类：<strong>左值</strong>（lvalue，即left value）与<strong>右值</strong>（rvalue，即right value）。而这两个值类别的名称来源也很容易理解，<strong>左值</strong>就是可以在<code>=</code>左侧的值，而<strong>右值</strong>则是在<code>=</code>右侧的值（注意：这个称呼是C语言的历史遗留，一般而言左值并不总能出现在<code>=</code>左侧，右值同理）。</p>
+<p>所以一开始的那个问题也就很好回答了：<code>42 = x</code>之所以错误，是由于&#96;42·作为一个数字字面量，它没有确定的内存地址，是一个右值，而赋值语句的左侧需要的是一个左值，所以这个语句显然错误。</p>
 <h2 id="左值引用与右值引用"><a href="#左值引用与右值引用" class="headerlink" title="左值引用与右值引用"></a>左值引用与右值引用</h2><p>从上一节的内容中我们不难看出左值和右值在代码层面上的一个关键区别：左值可以被修改，而右值不能被修改。从这一点出发我们可以自然地想到：对于引用来说，通过指向左值的引用<strong>可以修改其引用的变量</strong>，而通过指向右值的变量则<strong>不能修改引用的变量，只能使用变量的值</strong>。我们将前者称为<strong>左值引用</strong>（lvalue references），后者称之为<strong>右值引用</strong>（rvalue references）。</p>
 <h3 id="非常量左值引用与常量左值引用"><a href="#非常量左值引用与常量左值引用" class="headerlink" title="非常量左值引用与常量左值引用"></a>非常量左值引用与常量左值引用</h3><p>我们在C++中所称的引用，一般都指左值引用，这类引用使用<code>&amp;</code>创建，而左值引用又分为常量与非常量两种：</p>
  <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> &amp;a_ref = a;	<span class="comment">//引用变量a的非常量引用</span></span><br><span class="line"><span class="type">int</span> <span class="type">const</span> &amp;a_const_ref = a;	<span class="comment">//引用变量a的常量引用</span></span><br></pre></td></tr></table></figure></div>
 
 <p>无论是常量还是非常量的左值引用，都可以引用变量（即左值）。但是对于引用右值，这两种左值引用就有区别了：</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> &amp;ref = <span class="number">5</span>;	<span class="comment">//错误，非常量左值引用不能引用右值</span></span><br><span class="line"><span class="type">int</span> <span class="type">const</span> &amp;const_ref = <span class="number">5</span>;	<span class="comment">//正确，常量左值引用既可引用左值也可以引用右值</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> &amp;ref = <span class="number">42</span>;	<span class="comment">//错误，非常量左值引用不能引用右值</span></span><br><span class="line"><span class="type">int</span> <span class="type">const</span> &amp;const_ref = <span class="number">42</span>;	<span class="comment">//正确，常量左值引用既可引用左值也可以引用右值</span></span><br></pre></td></tr></table></figure></div>
 
 <p>这也很容易理解：通过<code>ref</code>我们可以修改其引用的变量，而由于右值没有内存地址无法被修改，所以必须要通过显示的说明我们不会通过这个左值引用修改引用的变量（也就是加上一个<code>const</code>），才能让左值引用引用右值。</p>
 <h3 id="右值引用"><a href="#右值引用" class="headerlink" title="右值引用"></a>右值引用</h3><p>右值引用顾名思义，就是<strong>只能</strong>引用右值的引用，右值引用使用<code>&amp;&amp;</code>来创建：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> &amp;&amp;a_rvalue_ref = a;	<span class="comment">//错误，右值引用只能引用右值</span></span><br><span class="line"><span class="type">int</span> &amp;&amp;rvalue_ref = <span class="number">5</span>;	<span class="comment">//正确</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="右值引用一定只能引用右值的表达式吗？"><a href="#右值引用一定只能引用右值的表达式吗？" class="headerlink" title="右值引用一定只能引用右值的表达式吗？"></a>右值引用一定只能引用右值的表达式吗？</h3><p>长话短说：</p>
+<ul>
+<li>右值引用可以通过<code>std::move</code>函数来将左值转化为右值从而实现使用右值引用来引用左值：</li>
+</ul>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">42</span>;</span><br><span class="line"><span class="type">int</span> &amp;&amp;rvalue_ref = a;	<span class="comment">//错误，a是个左值</span></span><br><span class="line"><span class="type">int</span> &amp;&amp;rvalue_ref = std::<span class="built_in">move</span>(a);	<span class="comment">//正确，使用std::move来将左值转化为右值</span></span><br><span class="line"><span class="type">int</span> &amp;&amp;rvalue_ref = <span class="built_in">static_cast</span>&lt;<span class="type">int</span>&amp;&amp;&gt;(a);	<span class="comment">//与上面使用std::move等价</span></span><br></pre></td></tr></table></figure></div>
+
+<p><strong>特别注意</strong>：<code>std::move</code>并<strong>没有</strong>实际上移动任何东西，这个函数起到的作用等价于一次类型转换，将左值转化为了对应的右值引用（上述代码中亦有示例）。而实际的移动操作还需要取决于对应类型有没有提供移动操作。</p>
+<ul>
+<li>右值引用只能引用右值，但对于被引用的右值而言，其生存期会被拓展，相当于成为了一个“左值”</li>
+</ul>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> &amp;&amp;rvalue_ref = <span class="number">42</span>;	<span class="comment">//42被右值引用所引用从而拓展了生存期</span></span><br><span class="line"><span class="comment">//具体而言，该值的生存期从极为短暂的临时值被拓展了，现在该值与该右值引用拥有相同的生存期</span></span><br><span class="line">rvalue_ref = <span class="number">0</span>;	<span class="comment">//亦可以通过右值引用修改被引用的右值（因为该右值的生存期被拓展，可以被写入）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//上述代码亦可以理解为以下等价操作：</span></span><br><span class="line"><span class="type">int</span> a = <span class="number">42</span>;</span><br><span class="line"><span class="type">int</span> &amp;lvalue_ref = a;</span><br><span class="line">a = <span class="number">0</span>;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>至于左值引用能不能指向右值，上文中已经详细讲解了<code>const &amp;</code>为什么既可以引用左值也可以引用右值，故此处不在展开。</p>
+<h3 id="左右值引用是左值还是右值？"><a href="#左右值引用是左值还是右值？" class="headerlink" title="左右值引用是左值还是右值？"></a>左右值引用是左值还是右值？</h3><p>长话短说：</p>
+<p>在代码中声明的左、右值引用自身都是左值。这非常容易理解，因为左右值引用本身都位于<code>=</code>号的左边：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">needRvalueRef</span><span class="params">(<span class="type">int</span> &amp;&amp;rvalue_ref)</span> </span>&#123;	<span class="comment">//函数参数只能为右值</span></span><br><span class="line">    rvalue_ref = <span class="number">1919810</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">114514</span>;</span><br><span class="line">    <span class="type">int</span> &amp;lvalue_ref = a;</span><br><span class="line">    <span class="type">int</span> &amp;&amp;rvalue_ref = std::<span class="built_in">move</span>(a);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">needRvalueRef</span>(<span class="number">42</span>);	<span class="comment">//显然正确，42这个值的生存期被拓展了</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">needRvalueRef</span>(a);	<span class="comment">//错误，a是个左值</span></span><br><span class="line">    <span class="built_in">needRvalueRef</span>(lvalue_ref);	<span class="comment">//错误，左值引用本身是个变量，所以其亦为左值</span></span><br><span class="line">    <span class="built_in">needRvalueRef</span>(rvalue_ref);	<span class="comment">//错误，右值引用本身是个变量，所以其亦为左值</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//以下三行均通过</span></span><br><span class="line">    <span class="built_in">needRvalueRef</span>(std::<span class="built_in">move</span>(a));</span><br><span class="line">    <span class="built_in">needRvalueRef</span>(std::<span class="built_in">move</span>(lvalue_ref));</span><br><span class="line">    <span class="built_in">needRvalueRef</span>(std::<span class="built_in">move</span>(rvalue_ref));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>那么如果函数返回一个右值引用（如<code>std::move</code>），那么返回的右值引用是左值还是右值呢？</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> &amp;&amp;rvalue_ref = std::<span class="built_in">move</span>(some_var);</span><br></pre></td></tr></table></figure></div>
+
+<p>由右值引用本身的定义来看，这里<code>std::move</code>返回的值应该是个右值，而这与上文所述似乎矛盾，但这里可以这样解释：</p>
+<ol>
+<li>之所以上文在说明左、右值引用都是左值的时候强调它们都是<strong>在代码中声明的</strong>的原因非常明显：在代码中声明出的引用都是变量，而变量显然都是左值</li>
+<li>由左右值在内存地址上的区分来看，函数返回值本身并没有一个稳定不变的内存地址（可以看作为一个临时值），所以<code>std::move</code>所返回的右值引用是个右值</li>
+</ol>
+<p><em>（语言律师们手下留情：我知道这个问题本身以及解释都是错误的，因为由返回对象是右值引用的函数调用表达式是个亡值，而函数的返回值也不一定是右值，这里只是单纯地为了讲解简洁方便理解）</em></p>
 <h1 id="移动语义"><a href="#移动语义" class="headerlink" title="移动语义"></a>移动语义</h1><h2 id="为什么需要移动？"><a href="#为什么需要移动？" class="headerlink" title="为什么需要移动？"></a>为什么需要移动？</h2><h2 id="C-11中的值类别"><a href="#C-11中的值类别" class="headerlink" title="C++11中的值类别"></a>C++11中的值类别</h2><h2 id="返回值优化：RVO与NRVO"><a href="#返回值优化：RVO与NRVO" class="headerlink" title="返回值优化：RVO与NRVO"></a>返回值优化：RVO与NRVO</h2>
         </div>
 
@@ -673,7 +703,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-08-11 13:24:52
+                    :</strong> 2024-08-11 20:19:26
             </li>
         
         <li>
@@ -793,7 +823,7 @@
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
         <div class="page-title">通俗解释C++中的复制和移动语义（原创）</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%9A%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC"><span class="nav-text">前置知识：左值与右值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%80%BC%E7%B1%BB%E5%88%AB%E7%9A%84%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8"><span class="nav-text">表达式值类别的简单入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">左值引用与右值引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%B8%B8%E9%87%8F%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E5%B8%B8%E9%87%8F%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">非常量左值引用与常量左值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">右值引用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="nav-text">移动语义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%A7%BB%E5%8A%A8%EF%BC%9F"><span class="nav-text">为什么需要移动？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-11%E4%B8%AD%E7%9A%84%E5%80%BC%E7%B1%BB%E5%88%AB"><span class="nav-text">C++11中的值类别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96%EF%BC%9ARVO%E4%B8%8ENRVO"><span class="nav-text">返回值优化：RVO与NRVO</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%9A%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC"><span class="nav-text">前置知识：左值与右值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%80%BC%E7%B1%BB%E5%88%AB%E7%9A%84%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8"><span class="nav-text">表达式值类别的简单入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">左值引用与右值引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%B8%B8%E9%87%8F%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E5%B8%B8%E9%87%8F%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">非常量左值引用与常量左值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%80%E5%AE%9A%E5%8F%AA%E8%83%BD%E5%BC%95%E7%94%A8%E5%8F%B3%E5%80%BC%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%90%97%EF%BC%9F"><span class="nav-text">右值引用一定只能引用右值的表达式吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A6%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E6%98%AF%E5%B7%A6%E5%80%BC%E8%BF%98%E6%98%AF%E5%8F%B3%E5%80%BC%EF%BC%9F"><span class="nav-text">左右值引用是左值还是右值？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="nav-text">移动语义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%A7%BB%E5%8A%A8%EF%BC%9F"><span class="nav-text">为什么需要移动？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-11%E4%B8%AD%E7%9A%84%E5%80%BC%E7%B1%BB%E5%88%AB"><span class="nav-text">C++11中的值类别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96%EF%BC%9ARVO%E4%B8%8ENRVO"><span class="nav-text">返回值优化：RVO与NRVO</span></a></li></ol></li></ol>
 
     </div>
 </div>
