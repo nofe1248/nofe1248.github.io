@@ -22,21 +22,18 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="前言：为什么我们需要移动？如果你是一个C++初学者，那么你大概率会在学习引用&#x2F;指针的时候尝试过写一个交换两个对象的swap函数： 12345void swap(SomeType &amp;a, SomeType &amp;b) &#123;    auto temp &#x3D; a;    a &#x3D; b;    b &#x3D; temp;&#125;  这段代码可以用，但是不够好，让我们试着分析一下在sw">
+        <meta name="description" content="前置知识：左值与右值任何一个学过C++的人都能轻松地指出下面这两行代码中哪一行有错误： 1234int x &#x3D; 0;x &#x3D; 5;	&#x2F;&#x2F;显然正确5 &#x3D; x;	&#x2F;&#x2F;显然错误  但是并不是每一个人都能精确的描述出为什么x &#x3D; 5就是合理的而5 &#x3D; x显然错误，对于那些新手来说，他们可能会总结出一个模糊的规律：  赋值语句（即&#x3D;）的左侧只能为变量 赋值语句的右侧可以为变量或者一个值  这个规律很模糊，也很">
 <meta property="og:type" content="article">
-<meta property="og:title" content="通俗解释C++中的复制和移动语义（翻译自hackingcpp.com）">
+<meta property="og:title" content="通俗解释C++中的复制和移动语义（原创）">
 <meta property="og:url" content="https://minecraft1248.github.io/2024/08/10/copy-and-move-semantics/index.html">
 <meta property="og:site_name" content="nothing here.">
-<meta property="og:description" content="前言：为什么我们需要移动？如果你是一个C++初学者，那么你大概率会在学习引用&#x2F;指针的时候尝试过写一个交换两个对象的swap函数： 12345void swap(SomeType &amp;a, SomeType &amp;b) &#123;    auto temp &#x3D; a;    a &#x3D; b;    b &#x3D; temp;&#125;  这段代码可以用，但是不够好，让我们试着分析一下在sw">
+<meta property="og:description" content="前置知识：左值与右值任何一个学过C++的人都能轻松地指出下面这两行代码中哪一行有错误： 1234int x &#x3D; 0;x &#x3D; 5;	&#x2F;&#x2F;显然正确5 &#x3D; x;	&#x2F;&#x2F;显然错误  但是并不是每一个人都能精确的描述出为什么x &#x3D; 5就是合理的而5 &#x3D; x显然错误，对于那些新手来说，他们可能会总结出一个模糊的规律：  赋值语句（即&#x3D;）的左侧只能为变量 赋值语句的右侧可以为变量或者一个值  这个规律很模糊，也很">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="d:\nofe1248blog\source\images\copy-and-move-semantics\image-20240811122713383.png">
-<meta property="og:image" content="d:\nofe1248blog\source\images\copy-and-move-semantics\image-20240811122828310.png">
 <meta property="article:published_time" content="2024-08-10T15:41:19.000Z">
-<meta property="article:modified_time" content="2024-08-11T04:43:37.843Z">
+<meta property="article:modified_time" content="2024-08-11T05:07:13.789Z">
 <meta property="article:author" content="Minecraft1248">
-<meta property="article:tag" content="C++">
+<meta property="article:tag" content="C++ 原创 C++11">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="d:\nofe1248blog\source\images\copy-and-move-semantics\image-20240811122713383.png">
     
     
     <!--- Icon Part-->
@@ -48,7 +45,7 @@
     
     <title>
         
-            通俗解释C++中的复制和移动语义（翻译自hackingcpp.com） -
+            通俗解释C++中的复制和移动语义（原创） -
         
         nothing here.
     </title>
@@ -574,7 +571,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">通俗解释C++中的复制和移动语义（翻译自hackingcpp.com）</h1>
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">通俗解释C++中的复制和移动语义（原创）</h1>
                 </div>
             
             </div>
@@ -602,8 +599,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-11 12:43:37</span>
-            <span class="mobile">2024-08-11 12:43:37</span>
+            <span class="desktop">2024-08-11 13:07:13</span>
+            <span class="mobile">2024-08-11 13:07:13</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -615,7 +612,7 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/C/">C++</a>&nbsp;
+                        <a href="/tags/C-%E5%8E%9F%E5%88%9B-C-11/">C++ 原创 C++11</a>&nbsp;
                     </li>
                 
             </ul>
@@ -641,44 +638,17 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h1 id="前言：为什么我们需要移动？"><a href="#前言：为什么我们需要移动？" class="headerlink" title="前言：为什么我们需要移动？"></a>前言：为什么我们需要移动？</h1><p>如果你是一个C++初学者，那么你大概率会在学习引用&#x2F;指针的时候尝试过写一个交换两个对象的<code>swap</code>函数：</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">swap</span><span class="params">(SomeType &amp;a, SomeType &amp;b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+            <h1 id="前置知识：左值与右值"><a href="#前置知识：左值与右值" class="headerlink" title="前置知识：左值与右值"></a>前置知识：左值与右值</h1><p>任何一个学过C++的人都能轻松地指出下面这两行代码中哪一行有错误：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">x = <span class="number">5</span>;	<span class="comment">//显然正确</span></span><br><span class="line"><span class="number">5</span> = x;	<span class="comment">//显然错误</span></span><br></pre></td></tr></table></figure></div>
 
-<p>这段代码<strong>可以用</strong>，但是<strong>不够好</strong>，让我们试着分析一下在<code>swap</code>函数被调用的过程中内存里面发生的操作：</p>
-<p><figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="D:\nofe1248blog\source\images\copy-and-move-semantics\image-20240811122713383.png"
-                      alt="image-20240811122713383"
-                ><figcaption>image-20240811122713383</figcaption></figure></p>
-<p>仔细思考一下我们就会发现上述代码的不足之处：</p>
-<ol>
-<li>不需要将<code>a</code>的值复制到<code>temp</code>中</li>
-<li>不需要将<code>temp</code>的值复制到<code>b</code>中</li>
-<li><code>temp</code>不需要一直保有<code>a</code>的值</li>
-</ol>
-<p>我们需要的是：</p>
-<ol>
-<li>一种<strong>移动</strong>对象内容的方式</li>
-<li>一种表达<code>temp</code>是一个<strong>临时变量</strong>的方式</li>
-<li>一种通过<strong>函数重载</strong>来对临时变量进行特殊处理（移动）的方式</li>
-</ol>
-<p>只需要对刚才的代码稍加改造，我们就能获得满足我们需求的，更好的<code>swap</code>函数：</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">swap</span><span class="params">(SomeType &amp;a, SomeType &amp;b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> temp = std::<span class="built_in">move</span>(a);</span><br><span class="line">    a = std::<span class="built_in">move</span>(b);</span><br><span class="line">    b = std::<span class="built_in">move</span>(temp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-
-
-<p><figure class="image-caption"><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="D:\nofe1248blog\source\images\copy-and-move-semantics\image-20240811122828310.png"
-                      alt="image-20240811122828310"
-                ><figcaption>image-20240811122828310</figcaption></figure></p>
-<p>上图中变量之间发生的操作就是所谓的<strong>移动</strong>，与复制相比，移动具有的一个显著的优点是：</p>
+<p>但是并不是每一个人都能精确的描述出为什么<code>x = 5</code>就是合理的而<code>5 = x</code>显然错误，对于那些新手来说，他们可能会总结出一个模糊的规律：</p>
 <ul>
-<li>如果<code>SomeType</code>类型的移动操作较复制操作更为高效（cheaply movable），那么我们将会获得更高的性能</li>
-<li>而且除<code>std::array</code>之外的所有标准库容器的移动操作都非常高效，下面我们以<code>std::vector</code>为例说明：</li>
+<li>赋值语句（即<code>=</code>）的左侧只能为变量</li>
+<li>赋值语句的右侧可以为变量或者一个值</li>
 </ul>
+<p>这个规律很模糊，也很不精确。要想真正的弄清楚这个问题，我们就要从一个关键点开始思考：<strong>变量和值之间最为本质的区别是什么？</strong></p>
+<p>答案很简单：有没有<strong>稳定不变</strong>的内存地址。</p>
+<p>一个变量在其生命周期中的内存地址很明显是不变的，而对于一个值而言（就像上述代码中的那个<code>5</code>）其在内存中的存在很显然是非常短暂的（编译器甚至可以通过优化让它们不占用任何内存）。而赋值语句的作用可以简单理解为将一个值写入内存中的一片区域，所以被写入的那一部分必须拥有稳定不变的内存地址，而对于需要写入的那个值则没有这类要求。这就引出了一个重要的概念：表达式的<strong>值类别</strong>（value category）。值类别可以简单地分为两类：<strong>左值</strong>（lvalue，即left value）与<strong>右值</strong>（rvalue，即right value）。而这两个值类别的名称来源也很容易理解，<strong>左值</strong>就是可以在<code>=</code>左侧的值，而<strong>右值</strong>则是在<code>=</code>右侧的值。</p>
 
         </div>
 
@@ -686,14 +656,14 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>标题:</strong> 通俗解释C++中的复制和移动语义（翻译自hackingcpp.com）</li>
+        <li><strong>标题:</strong> 通俗解释C++中的复制和移动语义（原创）</li>
         <li><strong>作者:</strong> nofe1248</li>
         <li><strong>创建于
                 :</strong> 2024-08-10 23:41:19</li>
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-08-11 12:43:37
+                    :</strong> 2024-08-11 13:07:13
             </li>
         
         <li>
@@ -719,7 +689,7 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/C/">#C++</a>&nbsp;
+                        <a href="/tags/C-%E5%8E%9F%E5%88%9B-C-11/">#C++ 原创 C++11</a>&nbsp;
                     </li>
                 
             </ul>
@@ -812,8 +782,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
-        <div class="page-title">通俗解释C++中的复制和移动语义（翻译自hackingcpp.com）</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E9%9C%80%E8%A6%81%E7%A7%BB%E5%8A%A8%EF%BC%9F"><span class="nav-text">前言：为什么我们需要移动？</span></a></li></ol>
+        <div class="page-title">通俗解释C++中的复制和移动语义（原创）</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%9A%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC"><span class="nav-text">前置知识：左值与右值</span></a></li></ol>
 
     </div>
 </div>
