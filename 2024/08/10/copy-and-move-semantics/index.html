@@ -30,7 +30,7 @@
 <meta property="og:description" content="前置知识：左值与右值表达式值类别的简单入门任何一个学过C++的人都能轻松地指出下面这两行代码中哪一行有错误： 1234int x &#x3D; 0;x &#x3D; 42;	&#x2F;&#x2F;显然正确42 &#x3D; x;	&#x2F;&#x2F;显然错误  但是并不是每一个人都能精确的描述出为什么x &#x3D; 5就是合理的而5 &#x3D; x显然错误，对于那些新手来说，他们可能会总结出一个模糊的规律：  赋值语句（即&#x3D;）的左侧只能为变量 赋值语句的右侧可以为变量或者一个">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-08-10T15:41:19.000Z">
-<meta property="article:modified_time" content="2024-08-16T05:44:44.393Z">
+<meta property="article:modified_time" content="2024-08-16T07:02:29.154Z">
 <meta property="article:author" content="Minecraft1248">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="C++11">
@@ -601,8 +601,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-16 13:44:44</span>
-            <span class="mobile">2024-08-16 13:44:44</span>
+            <span class="desktop">2024-08-16 15:02:29</span>
+            <span class="mobile">2024-08-16 15:02:29</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -714,6 +714,7 @@
 <li>之所以上文在说明左、右值引用都是左值的时候强调它们都是<strong>在代码中声明的</strong>的原因非常明显：在代码中声明出的引用都是变量，而变量显然都是左值</li>
 <li>由左右值在内存地址上的区分来看，函数返回值本身并没有一个稳定不变的内存地址（可以看作为一个临时值），所以<code>std::move</code>所返回的右值引用是个右值</li>
 </ol>
+<p>简单来说，<strong>具名</strong>(<em>named</em>)的右值引用是个左值，而<strong>不具名</strong>(<em>unamed</em>)的右值引用是个右值。</p>
 <p><em>（语言律师们手下留情：我知道这个问题本身以及解释都是错误的，因为由返回对象是右值引用的函数调用表达式是个亡值，而函数的返回值也不一定是右值，这里只是单纯地为了讲解简洁方便理解）</em></p>
 <h1 id="移动语义"><a href="#移动语义" class="headerlink" title="移动语义"></a>移动语义</h1><h2 id="为什么需要移动？"><a href="#为什么需要移动？" class="headerlink" title="为什么需要移动？"></a>为什么需要移动？</h2><h3 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h3><p>对于初次接触移动这个概念的C++新手而言，他们总是会认为移动这个过程是将旧变量在内存中的内容移动到了新变量之中，也就是先复制内容到新变量中，然后再销毁旧变量中的值。可问题是：如果移动真的就是这样，为什么移动相比于复制而言一般都会有性能提升？</p>
 <p>显然，这种对于移动的认识是错误的，这种先复制再销毁旧值的操作并不是没有，但是不叫作<strong>移动</strong>（move），而是称为<strong>重定位</strong>（relocate）。<strong>C++当中的移动并不是简单的内存内容的移动，而是对变量内容的所有权在新旧变量间的转移</strong>。一般而言，复制过程中一般发生的是<strong>深拷贝</strong>（deep copy），而移动过程中通常发生的是<strong>浅拷贝</strong>（shallow copy）。</p>
@@ -777,11 +778,11 @@
 
 <h2 id="C-11中的值类别"><a href="#C-11中的值类别" class="headerlink" title="C++11中的值类别"></a>C++11中的值类别</h2><p>在文章的开始，我们简要地讲述了C++当中的左值和右值。但实际上，仅有左值和右值是不足以实现完整的移动语义的，所以在C++11标准中，值类别的类型进行了一次拓展，目前C++的值类别包括（以C++17标准为准）：</p>
 <ul>
-<li><strong>泛左值</strong>（glvalue，即<strong>G</strong>eneralized <strong>L</strong>eft <strong>Value</strong>）</li>
-<li><strong>右值</strong>（rvalue，即<strong>R</strong>ight <strong>Value</strong>）</li>
-<li><strong>纯右值</strong>（prvalue，即<strong>P</strong>ure <strong>R</strong>ight <strong>Value</strong>）</li>
-<li><strong>亡值</strong>（xvalue，即E<strong>x</strong>pired <strong>Value</strong>）</li>
-<li><strong>左值</strong>（lvalue，即<strong>L</strong>eft <strong>Value</strong>）</li>
+<li><strong>泛左值</strong>（glvalue，即<strong>G</strong>eneralized <strong>L</strong>eft <strong>Value</strong>）：左值或亡值</li>
+<li><strong>右值</strong>（rvalue，即<strong>R</strong>ight <strong>Value</strong>）：一个临时值或不指代特定对象的表达式</li>
+<li><strong>纯右值</strong>（prvalue，即<strong>P</strong>ure <strong>R</strong>ight <strong>Value</strong>）：不是亡值的右值</li>
+<li><strong>亡值</strong>（xvalue，即E<strong>x</strong>piring <strong>Value</strong>）：与左值相同，指代一个对象的表达式，该对象通常即将被析构（这就是亡值这个名称的来源，亦有资料将其称为<strong>将亡值</strong>）</li>
+<li><strong>左值</strong>（lvalue，即<strong>L</strong>eft <strong>Value</strong>）：指代一个对象的表达式</li>
 </ul>
 <p>这五种值类别并不是平行的，而是有着下图所示的包含关系：</p>
 <pre class="mermaid">flowchart TB
@@ -799,7 +800,46 @@
     rvalue--包括-->xvalue</pre>
 
 <p>觉得有点理解不了？下面我们通过示例代码来逐一解释这些值类别的意义：</p>
-<h2 id="返回值优化：RVO与NRVO"><a href="#返回值优化：RVO与NRVO" class="headerlink" title="返回值优化：RVO与NRVO"></a>返回值优化：RVO与NRVO</h2>
+<h3 id="左值（lvalue）"><a href="#左值（lvalue）" class="headerlink" title="左值（lvalue）"></a>左值（lvalue）</h3><p>如果我们说一个表达式是左值，那么我们就相当于在说这个表达式<strong>指代一个特定的对象</strong>，而对象则是<strong>拥有名称（即标识符</strong> <em>identifier</em> <strong>）的一片内存</strong>。比如说：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//lvalue_1指代了一个对象</span></span><br><span class="line"><span class="type">int</span> lvalue_1 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//lvalue_2通过引用指代了一个对象，引用本身不是对象</span></span><br><span class="line"><span class="type">int</span> &amp;lvalue_2 = lvalue_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">//lvalue_3通过指针指代了一个对象，指针自身同样是对象，所以lvalue_3与*lvalue_3都是左值</span></span><br><span class="line"><span class="type">int</span> *lvalue_3 = &amp;lvalue_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回一个左值引用的函数也指代了一个对象</span></span><br><span class="line"><span class="function"><span class="type">int</span> &amp;<span class="title">lvalue_4</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> lvalue_1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>我们可以对左值表达式的值进行读写，这就相当于对左值表达式指代的对象进行读写：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读</span></span><br><span class="line">cout &lt;&lt; lvalue_1 &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; lvalue_2 &lt;&lt; endl;</span><br><span class="line"><span class="comment">//指针自身同样是对象，所以lvalue_3与*lvalue_3都是左值</span></span><br><span class="line">cout &lt;&lt; lvalue_3 &lt;&lt; endl;	<span class="comment">//输出lvalue_1在内存中的地址</span></span><br><span class="line">cout &lt;&lt; *lvalue_3 &lt;&lt; endl;	<span class="comment">//输出lvalue_1的值</span></span><br><span class="line">cout &lt;&lt; <span class="built_in">lvalue_4</span>() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">//写</span></span><br><span class="line">lvalue_1 = <span class="number">10</span>;</span><br><span class="line">lvalue_2 = <span class="number">20</span>;</span><br><span class="line">*lvalue_3 = <span class="number">30</span>;</span><br><span class="line"><span class="built_in">lvalue_4</span>() = <span class="number">40</span>;</span><br><span class="line"><span class="built_in">lvalue_4</span>() = lvalue_1 + lvalue_2 * lvalue_3;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="纯右值（prvalue）"><a href="#纯右值（prvalue）" class="headerlink" title="纯右值（prvalue）"></a>纯右值（prvalue）</h3><p>一个纯右值表达式代表着一个直接值(<em>direct value</em>，也有资料将其称为立即值<em>immediate value</em>)的表达式：</p>
+<p>回想刚才左值的例子，等号右侧的<code>0</code>就是一个纯右值：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//0是个整型字面量，所以是个纯右值</span></span><br><span class="line"><span class="type">int</span> lvalue_1 = <span class="number">0</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>但是我们也能够立即发现，等号的右边似乎也可以出现左值：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> lvalue_2 = lvalue_1;</span><br></pre></td></tr></table></figure></div>
+
+<p>这似乎与我们对左值的直观性理解相冲突（毕竟你都叫做”左“值了），事实上，标准委员会也是这么认为的，所以标准中有这样一句话：</p>
+<blockquote>
+<p>C++标准§3.10.2：</p>
+<p>当一个泛左值出现在需要一个纯右值的地方时，该泛左值被转化为纯右值。</p>
+<p><em>Whenever a glvalue appears in a context where a prvalue is expected, the glvalue is converted to a prvalue.</em></p>
+</blockquote>
+<p>所以这里作为左值的<code>lvalue_1</code>首先被转化为纯右值然后再作为纯右值出现在赋值号右侧，这样就与左值和右值本身的名字相符了。</p>
+<p>那么我们怎么样将一个左值转化为一个纯右值呢？答案是通过将左值表达式进行求值（也就是读取左值表达式指代变量的值），从而将一个指代特定对象的表达式（也就是左值）转化为一个纯粹的值（也就是纯右值）。</p>
+<p>回到我们对纯右值的解释上来，从精确定义上说，纯右值表达式由且仅由以下几种表达式组成：</p>
+<ol>
+<li>字面量表达式（比如整型字面量<code>42</code>，浮点字面量<code>0.2f</code>、字符串字面量<code>&quot;hello world&quot;</code>）</li>
+<li>返回一个值的函数调用表达式</li>
+<li>表达式运算过程中产生的临时变量</li>
+</ol>
+<p>这样讲比较抽象，下面我们来通过代码理解：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//42：字面量是纯右值</span></span><br><span class="line"><span class="type">int</span> prvalue_1 = <span class="number">42</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//prvalue_1：左值被转化为了纯右值</span></span><br><span class="line"><span class="type">int</span> prvalue_2 = prvalue_1;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">generate_prvalue</span><span class="params">(<span class="type">int</span> arg)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> arg * <span class="number">6</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//generate_prvalue(7)：返回一个值的函数调用是纯右值</span></span><br><span class="line"><span class="type">int</span> prvalue_3 = <span class="built_in">generate_prvalue</span>(<span class="number">7</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//6 + 7 * 2：表达式运算过程中产生的临时变量也是纯右值</span></span><br><span class="line"><span class="type">int</span> prvalue_4 = <span class="number">6</span> + <span class="number">7</span> * <span class="number">2</span>;</span><br><span class="line"><span class="comment">//上面这个运算过程可以看作：</span></span><br><span class="line"><span class="comment">//临时变量1、2</span></span><br><span class="line"><span class="type">int</span> __temporary_1 = <span class="number">7</span> * <span class="number">2</span>;</span><br><span class="line"><span class="type">int</span> __temporary_2 = __temporary_1 + <span class="number">6</span>;</span><br><span class="line"><span class="type">int</span> prvalue_4 = __temporary_2;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="亡值（xvalue）"><a href="#亡值（xvalue）" class="headerlink" title="亡值（xvalue）"></a>亡值（xvalue）</h3><p>亡值表达式<strong>首先是一种泛左值表达式</strong>，指代一个确定的对象，其次这个对象即将被析构，在析构前这个对象可以被重复利用（比如移动到另一个变量中），所以亡值表达式还是一个<strong>右值表达式</strong>（因为可以被移动）。</p>
+<p>还记得<strong>为什么需要移动</strong>一节中的代码示例吗？我们通过使用<code>std::move</code>来将一个<strong>左值表达式</strong>转化为一个<strong>右值</strong>使其可以被移动，这个说法其实是不准确的，让我们看看<code>std::move</code>实际上做了什么：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SomeStruct test_1&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//两行代码等价</span></span><br><span class="line">SomeStruct test_2 = std::<span class="built_in">move</span>(test_1);</span><br><span class="line">SomeStruct test_3 = <span class="built_in">static_cast</span>&lt;SomeStruct &amp;&amp;&gt;(test_1);</span><br></pre></td></tr></table></figure></div>
+
+<p>这也就是说，<code>std::move</code>将一个指代了对象的<strong>左值表达式</strong>（即上述代码中的<code>test_1</code>）转化为了一个引用这个对象的<strong>右值引用</strong>，从而让其可以被移动（回想一下，移动构造函数和移动赋值函数的参数都是右值引用）。</p>
+<p><code>std::move</code><strong>将左值表达式转换为右值引用</strong>，这与亡值的定义是一致的。而<code>std::move</code>通过将左值表达式转换为右值来使其可以移动，也就相当于亡值定义中的“对象可以被重复利用”一点。</p>
+<p>长话短说：<strong>所有指代了实际对象的左值表达式被转化为右值引用所产生的值是个亡值</strong>。</p>
+
         </div>
 
         
@@ -813,7 +853,7 @@
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-08-16 13:44:44
+                    :</strong> 2024-08-16 15:02:29
             </li>
         
         <li>
@@ -956,7 +996,7 @@
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
         <div class="page-title">通俗解释C++中的复制和移动语义</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%9A%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC"><span class="nav-text">前置知识：左值与右值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%80%BC%E7%B1%BB%E5%88%AB%E7%9A%84%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8"><span class="nav-text">表达式值类别的简单入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">左值引用与右值引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%B8%B8%E9%87%8F%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E5%B8%B8%E9%87%8F%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">非常量左值引用与常量左值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%80%E5%AE%9A%E5%8F%AA%E8%83%BD%E5%BC%95%E7%94%A8%E5%8F%B3%E5%80%BC%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%90%97%EF%BC%9F"><span class="nav-text">右值引用一定只能引用右值的表达式吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A6%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E6%98%AF%E5%B7%A6%E5%80%BC%E8%BF%98%E6%98%AF%E5%8F%B3%E5%80%BC%EF%BC%9F"><span class="nav-text">左右值引用是左值还是右值？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="nav-text">移动语义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%A7%BB%E5%8A%A8%EF%BC%9F"><span class="nav-text">为什么需要移动？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87"><span class="nav-text">性能提升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AE%E4%BF%9D%E5%8D%95%E4%B8%80%E6%89%80%E6%9C%89%E6%9D%83"><span class="nav-text">确保单一所有权</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-11%E4%B8%AD%E7%9A%84%E5%80%BC%E7%B1%BB%E5%88%AB"><span class="nav-text">C++11中的值类别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96%EF%BC%9ARVO%E4%B8%8ENRVO"><span class="nav-text">返回值优化：RVO与NRVO</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%9A%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC"><span class="nav-text">前置知识：左值与右值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%80%BC%E7%B1%BB%E5%88%AB%E7%9A%84%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8"><span class="nav-text">表达式值类别的简单入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">左值引用与右值引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%B8%B8%E9%87%8F%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%8E%E5%B8%B8%E9%87%8F%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">非常量左值引用与常量左值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E4%B8%80%E5%AE%9A%E5%8F%AA%E8%83%BD%E5%BC%95%E7%94%A8%E5%8F%B3%E5%80%BC%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%90%97%EF%BC%9F"><span class="nav-text">右值引用一定只能引用右值的表达式吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A6%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E6%98%AF%E5%B7%A6%E5%80%BC%E8%BF%98%E6%98%AF%E5%8F%B3%E5%80%BC%EF%BC%9F"><span class="nav-text">左右值引用是左值还是右值？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89"><span class="nav-text">移动语义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%A7%BB%E5%8A%A8%EF%BC%9F"><span class="nav-text">为什么需要移动？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%8F%90%E5%8D%87"><span class="nav-text">性能提升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AE%E4%BF%9D%E5%8D%95%E4%B8%80%E6%89%80%E6%9C%89%E6%9D%83"><span class="nav-text">确保单一所有权</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-11%E4%B8%AD%E7%9A%84%E5%80%BC%E7%B1%BB%E5%88%AB"><span class="nav-text">C++11中的值类别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%EF%BC%88lvalue%EF%BC%89"><span class="nav-text">左值（lvalue）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%AF%E5%8F%B3%E5%80%BC%EF%BC%88prvalue%EF%BC%89"><span class="nav-text">纯右值（prvalue）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A1%E5%80%BC%EF%BC%88xvalue%EF%BC%89"><span class="nav-text">亡值（xvalue）</span></a></li></ol></li></ol></li></ol>
 
     </div>
 </div>
