@@ -14,6 +14,8 @@
         
         
         
+            <link rel="preconnect" href="https://registry.npmmirror.com" crossorigin>
+        
     
     <!--- Seo Part-->
     
@@ -22,15 +24,15 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Just an enthusiast of modern C++.W">
+        <meta name="description" content="WARNING:本教程基于C++26标准，部分所讲解的特性、内容等可能并没有得到编译器的广泛支持，在实践本教程当中的内容时，推荐使用Clang 19及以上版本 引入：什么是泛型？思考一个简单的问题：如何实现一个函数max，返回两个数字中的较大值？任何一个学过C++的人，都会不假思索地写出以下代码： 123456789101112int max(int lhs, int rhs) &#123;	if">
 <meta property="og:type" content="article">
-<meta property="og:title" content="泛型编程与模板：现代C++模板教程（一）">
+<meta property="og:title" content="现代C++模板教程（一）：泛型编程入门">
 <meta property="og:url" content="https://minecraft1248.github.io/2024/08/13/template-1-generics/index.html">
 <meta property="og:site_name" content="nothing here.">
-<meta property="og:description" content="Just an enthusiast of modern C++.W">
+<meta property="og:description" content="WARNING:本教程基于C++26标准，部分所讲解的特性、内容等可能并没有得到编译器的广泛支持，在实践本教程当中的内容时，推荐使用Clang 19及以上版本 引入：什么是泛型？思考一个简单的问题：如何实现一个函数max，返回两个数字中的较大值？任何一个学过C++的人，都会不假思索地写出以下代码： 123456789101112int max(int lhs, int rhs) &#123;	if">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-08-12T16:26:25.000Z">
-<meta property="article:modified_time" content="2024-08-16T05:44:32.587Z">
+<meta property="article:modified_time" content="2024-09-04T04:45:56.331Z">
 <meta property="article:author" content="Minecraft1248">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="template">
@@ -46,12 +48,12 @@
     
     <title>
         
-            泛型编程与模板：现代C++模板教程（一） -
+            现代C++模板教程（一）：泛型编程入门 -
         
         nothing here.
     </title>
 
-    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/fonts/Chillax/chillax.css">
+    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/fonts/Chillax/chillax.css">
 
     <!--- Inject Part-->
     
@@ -61,33 +63,33 @@
 
 
     
-        <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/assets/build/styles.css">
+        <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/assets/build/styles.css">
     
 
-    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/fonts/GeistMono/geist-mono.css">
-    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/fonts/Geist/geist.css">
+    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/fonts/GeistMono/geist-mono.css">
+    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/fonts/Geist/geist.css">
     <!--- Font Part-->
     
     
     
     
-
     
-        <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/anime.min.js"></script>
+    
+        <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/anime.min.js"></script>
     
 
     <script id="hexo-configurations">
     window.config = {"hostname":"minecraft1248.github.io","root":"/","language":"zh-CN"};
-    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":5,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":6,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1200px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/cover5.jpg","dark":"/images/cover1.jpg"},"title":"nothing here but bugs.","subtitle":{"text":["Loading..."],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn/?c=i&c=k"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#373d3f","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/nofe1248/","instagram":null,"zhihu":null,"twitter":null,"email":"nofe1248@outlook.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags/"},"categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"About":{"icon":"fa-regular fa-user","path":"/about"},"Links":{"icon":"fa-solid fa-link","path":"/links/"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/11/04 20:58:14"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":true,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","highlight_theme":{"light":"github","dark":"night-owl"},"font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":5,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":6,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1200px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":true,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/cover5.jpg","dark":"/images/cover1.jpg"},"title":"nothing here but bugs.","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn/?c=i&c=k"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#373d3f","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/nofe1248/","instagram":null,"zhihu":null,"twitter":null,"email":"nofe1248@outlook.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":true,"version":"9.3.0"}},"version":"2.7.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags/"},"categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"About":{"icon":"fa-regular fa-user","path":"/about"},"Links":{"icon":"fa-solid fa-link","path":"/links/"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/11/04 20:58:14"};
     window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
     window.data = {"masonry":false};
   </script>
     
     <!--- Fontawesome Part-->
-    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/fontawesome/fontawesome.min.css">
-    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/fontawesome/brands.min.css">
-    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/fontawesome/solid.min.css">
-    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/fontawesome/regular.min.css">
+    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/fontawesome/fontawesome.min.css">
+    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/fontawesome/brands.min.css">
+    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/fontawesome/solid.min.css">
+    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/fontawesome/regular.min.css">
     
     
     
@@ -538,15 +540,15 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
         <div class="label text-third-text-color text-sm">标签</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
         <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -572,7 +574,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">泛型编程与模板：现代C++模板教程（一）</h1>
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">现代C++模板教程（一）：泛型编程入门</h1>
                 </div>
             
             </div>
@@ -600,8 +602,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-16 13:44:32</span>
-            <span class="mobile">2024-08-16 13:44:32</span>
+            <span class="desktop">2024-09-04 12:45:56</span>
+            <span class="mobile">2024-09-04 12:45:56</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -659,21 +661,54 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            
+            <p><em>WARNING:本教程基于C++26标准，部分所讲解的特性、内容等可能并没有得到编译器的广泛支持，在实践本教程当中的内容时，推荐使用Clang 19及以上版本</em></p>
+<h2 id="引入：什么是泛型？"><a href="#引入：什么是泛型？" class="headerlink" title="引入：什么是泛型？"></a>引入：什么是泛型？</h2><p>思考一个简单的问题：如何实现一个函数<code>max</code>，返回两个数字中的较大值？<br>任何一个学过C++的人，都会不假思索地写出以下代码：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> lhs, <span class="type">int</span> rhs)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (lhs &gt;= rhs) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> lhs;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> rhs;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cout &lt;&lt; <span class="built_in">max</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>这个函数的逻辑非常简单，只需要比较两个参数然后返回对应的最大值就可以了。<br>但是仔细思考一下，我们会发现，在实际应用中，我们需要处理的数字肯定不止<code>int</code>一种，为此，你可能会想到一种方法：为每种可能的数字类型写一个函数重载：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> lhs, <span class="type">int</span> rhs)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (lhs &gt;= rhs) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> lhs;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> rhs;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">long</span> <span class="title">max</span><span class="params">(<span class="type">long</span> lhs, <span class="type">long</span> rhs)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (lhs &gt;= rhs) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> lhs;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> rhs;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">max</span><span class="params">(<span class="type">double</span> lhs, <span class="type">double</span> rhs)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (lhs &gt;= rhs) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> lhs;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> rhs;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cout &lt;&lt; <span class="built_in">max</span>(<span class="number">1</span>, <span class="number">2</span>) &lt;&lt; std::endl;</span><br><span class="line">	std::cout &lt;&lt; <span class="built_in">max</span>(<span class="number">114514.0f</span>, <span class="number">1234.0f</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//省略其余重载...</span></span><br></pre></td></tr></table></figure></div>
+
+<p>不难发现，这种通过重载函数来处理不同的数据类型的方式<strong>非常的不优雅</strong>，使用这种方式，我们需要为<strong>所有可能</strong>的类型写一个单独的实现，而且这些实现内容往往<strong>高度相似</strong>（在我们的例子中是完全一致）。这个时候有的人就会想到一个天生用来实现重复内容的东西：宏定义。我们可以通过一个宏来实现针对不同类型的函数的生成：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> GENERATE_MAX_FUNCTION(type) type max(type lhs, type rhs) \</span></span><br><span class="line"><span class="meta">&#123;\</span></span><br><span class="line"><span class="meta">	<span class="keyword">if</span> (lhs &gt;= rhs) \</span></span><br><span class="line"><span class="meta">	&#123;\</span></span><br><span class="line"><span class="meta">		return lhs;\</span></span><br><span class="line"><span class="meta">	&#125;\</span></span><br><span class="line"><span class="meta">	return rhs;\</span></span><br><span class="line"><span class="meta">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">GENERATE_MAX_FUNCTION</span>(<span class="type">int</span>)</span><br><span class="line"><span class="built_in">GENERATE_MAX_FUNCTION</span>(<span class="type">long</span>)</span><br><span class="line"><span class="built_in">GENERATE_MAX_FUNCTION</span>(<span class="type">double</span>)</span><br><span class="line"><span class="comment">//其余省略...</span></span><br></pre></td></tr></table></figure></div>
+
+<p>这种方式可能看起来非常简洁，但是我们很快就能注意到以下缺陷：</p>
+<ul>
+<li>宏定义可维护性差、防呆性差：我们无法像正常代码一样方便地来分析宏定义展开后的代码（尤其是在宏定义内容多、嵌套时），同时宏定义不会对传入的参数做任何检查（你可以给<code>GENERATE_MAX_FUNCTION</code>传一个类型名、表达式、函数名等，而宏定义都会简单的替换后展开），有可能产生让人摸不着头脑的问题</li>
+<li>重复的工作量并没有消失，只是减少了，我们依然需要针对每一个可能的数据类型写对应的宏定义<br>如果你能成功注意到以上问题，那么你就成功的在脑海里重现了几十年前C++之父Bjarne Stroustrup的想法，为了解决这个问题，一个彻底改变了C++、极大影响了后续编程语言设计的功能出现了：模板（Templates）</li>
+</ul>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ArgumentType&gt;</span><br><span class="line"><span class="function">ArgumentType <span class="title">max</span><span class="params">(ArgumentType lhs, ArgumentType rhs)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (lhs &gt;= rhs) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> lhs;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> rhs;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	std::cout &lt;&lt; <span class="built_in">max</span>&lt;<span class="type">int</span>&gt;(<span class="number">42</span>, <span class="number">114514</span>) &lt;&lt; std::endl;</span><br><span class="line">	std::cout &lt;&lt; <span class="built_in">max</span>&lt;<span class="type">float</span>&gt;(<span class="number">13.5f</span>, <span class="number">4.2f</span>) &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>在上述代码中，我们通过使用模板实现了<code>max</code>的返回类型和参数类型的参数化（Parameterization），也就是说，将函数的返回类型和参数类型也<strong>变成了函数的参数</strong>。而在使用这个函数的时候，我们需要将一个类型传入该函数，这个传入的类型就会以一种类似于宏定义替换的方式替换原函数当中的所有<code>ArgumentType</code>，从而实现与宏定义生成函数类似的功能。<br>为了教程用词准确，我们将上面这段代码用C++的术语表述出来：</p>
+<ol>
+<li>我们首先声明了一个<strong>模板函数</strong>（Template function）<code>max</code>，这个函数接受一个<strong>类型模板参数</strong>（Type template parameter）<code>ArgumentType</code>，代表了这个函数的参数类型和返回类型。</li>
+<li>我们让<code>ArgumentType</code>成为<code>max</code>函数的返回类型和参数类型</li>
+<li>在<code>main</code>函数中，我们调用了两次<code>max</code>函数，我们可以将模板函数的模板参数看做占位符，只有当我们用具体的类型来取代这些占位符的时候，模板函数才能成为一个具体的、可以调用的函数。从直观上来理解，模板函数提供了生成具体函数的模板，我们通过传入具体类型，从而根据这个生成的模板来生成实际的函数。我们将这种传入具体类型生成具体函数的过程称为<strong>模板实例化</strong>（Template instantiation），实例化后的模板函数<strong>才会成为一个具体的函数</strong>，从而能被我们调用。<br>上述代码中这种将函数中所需使用的类型由具体的类型（比如<code>int</code>和<code>double</code>）变成了一个参数化的类型（也就是上述代码中的<code>ArgumentType</code>），从而实现只需编写一次函数就可处理各种数据类型的方式，称作<strong>泛型编程</strong>（Generic programming）。<br>不难发现，模板的使用完美解决了宏的两个缺陷：</li>
+</ol>
+<ul>
+<li>模板化的代码依然是正常的代码，在编写模板代码时IDE等工具可以正常的高亮代码和诊断问题，同时模板参数不允许你传入除类型以外的东西（其实有非类型模板参数，后续文章中会讲），可以有效避免使用宏带来的各种晦涩的报错</li>
+<li>模板函数不需要像宏定义一样，手动处理所有可能的类型，而是在使用的时候提供类型参数，从而避免了大量的重复工作量<br>从以上的例子中，我们也能总结出泛型编程的一般方法，在这里我们就以我们这个<code>max</code>函数的编写为例，解释泛型编程的过程：</li>
+</ul>
+<ol>
+<li>编写一个实际的函数，在我们的例子中就是一开始我们所写的<code>max</code></li>
+<li>思考这个函数中涉及到的类型（比如参数类型、返回类型，在这个例子中就是<code>int</code>）有什么特性<strong>是必须的</strong>，有哪些是对于我们的函数<strong>没有影响的</strong>，换而言之，就是寻找我们所需要的<strong>这些类型的共性</strong>。在这个例子中，我们需要这个类型的对象<strong>可以相互比较大小</strong></li>
+<li>将这些具体的类型替换为模板参数</li>
+<li>基于我们所需要的类型的共性，对模板参数做出<strong>一定的约束</strong>（Constraint）<br>在以上的过程中，如果你已经熟悉了泛型编程的思想，你可以直接跳过1，直接编写模板化的代码。而第4点中的对模板参数做出约束，我们会在后续的教程中做出讲解。</li>
+</ol>
+
         </div>
 
         
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>标题:</strong> 泛型编程与模板：现代C++模板教程（一）</li>
+        <li><strong>标题:</strong> 现代C++模板教程（一）：泛型编程入门</li>
         <li><strong>作者:</strong> nofe1248</li>
         <li><strong>创建于
                 :</strong> 2024-08-13 00:26:25</li>
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-08-16 13:44:32
+                    :</strong> 2024-09-04 12:45:56
             </li>
         
         <li>
@@ -713,21 +748,6 @@
 
         
             <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
-                
-                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2024/08/16/higher-raii-and-linear-types-translation/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Higher RAII与七种Linear Types的复杂使用场景</span>
-                                <span class="post-nav-item">上一篇</span>
-                            </span>
-                        </a>
-                    </div>
                 
                 
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
@@ -810,9 +830,9 @@
         <div class="toc-content-container">
             <div class="post-toc-wrap">
     <div class="post-toc">
-        <div class="toc-title">此页目录</div>
-        <div class="page-title">泛型编程与模板：现代C++模板教程（一）</div>
-        
+        <div class="toc-title">目录</div>
+        <div class="page-title">现代C++模板教程（一）：泛型编程入门</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E6%B3%9B%E5%9E%8B%EF%BC%9F"><span class="nav-text">引入：什么是泛型？</span></a></li></ol>
 
     </div>
 </div>
@@ -847,7 +867,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        共 4 篇文章
+                        共撰写了 3 篇文章
                     </span>
                     
                 </p>
@@ -872,7 +892,7 @@
         
         <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
             <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
-            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.7.0</a></span>
         </div>
         
         
@@ -984,7 +1004,7 @@
                 <input autocomplete="off"
                        autocorrect="off"
                        autocapitalize="off"
-                       placeholder="搜索..."
+                       placeholder="站内搜索您需要的内容..."
                        spellcheck="false"
                        type="search"
                        class="search-input"
@@ -1007,7 +1027,7 @@
 </main>
 
 
-    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/Swup.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/SwupSlideTheme.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/SwupScriptsPlugin.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/SwupProgressPlugin.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/SwupScrollPlugin.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/SwupPreloadPlugin.min.js"></script>
+    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/Swup.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/SwupSlideTheme.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/SwupScriptsPlugin.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/SwupProgressPlugin.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/SwupScrollPlugin.min.js"></script><script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/SwupPreloadPlugin.min.js"></script>
 <script>
     const swup = new Swup({
         plugins: [
@@ -1032,34 +1052,34 @@
 
 
 
-<script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/tools/imageViewer.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/utils.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/main.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/layouts/navbarShrink.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/tools/scrollTopBottom.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/tools/lightDarkSwitch.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/layouts/categoryList.js"></script>
+<script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/tools/imageViewer.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/utils.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/main.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/layouts/navbarShrink.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/tools/scrollTopBottom.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/tools/lightDarkSwitch.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/layouts/categoryList.js"></script>
 
 
-    <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/tools/localSearch.js"></script>
-
-
-
-    <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/tools/codeBlock.js"></script>
+    <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/tools/localSearch.js"></script>
 
 
 
-    <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/layouts/lazyload.js"></script>
+    <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/tools/codeBlock.js"></script>
 
 
 
-    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/tools/runtime.js"></script>
-    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/odometer.min.js"></script>
-    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/assets/odometer-theme-minimal.css">
+    <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/layouts/lazyload.js"></script>
 
 
 
-  <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/Typed.min.js"></script>
-  <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/plugins/typed.js"></script>
+    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/tools/runtime.js"></script>
+    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/odometer.min.js"></script>
+    <link rel="stylesheet" href="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/assets/odometer-theme-minimal.css">
 
 
 
-    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/libs/mermaid.min.js"></script>
-    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/plugins/mermaid.js"></script>
+  <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/Typed.min.js"></script>
+  <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/plugins/typed.js"></script>
+
+
+
+    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/libs/mermaid.min.js"></script>
+    <script src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/plugins/mermaid.js"></script>
 
 
 
@@ -1068,7 +1088,7 @@
 
 <div class="post-scripts" data-swup-reload-script>
     
-        <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/tools/tocToggle.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/layouts/toc.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.6.4/files/source/js/plugins/tabs.js"></script>
+        <script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/tools/tocToggle.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/layouts/toc.js"></script><script type="module" src="https://registry.npmmirror.com/hexo-theme-redefine/2.7.0/files/source/js/plugins/tabs.js"></script>
     
 </div>
 
