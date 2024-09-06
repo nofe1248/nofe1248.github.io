@@ -1448,8 +1448,8 @@ button {
   --mermaid-theme: '';
 }
 :root {
-  --code-foreground: #d6deeb;
-  --code-background: #011627;
+  --inline-code-foreground: #24292e;
+  --inline-code-background: #f1f1f1;
   --highlight-background: #011627;
   --highlight-foreground: #d6deeb;
   --highlight-keyword: #c792ea;
@@ -1471,8 +1471,8 @@ button {
 }
 @media (prefers-color-scheme: light) {
   :root {
-    --code-foreground: #d6deeb;
-    --code-background: #011627;
+    --inline-code-foreground: #24292e;
+    --inline-code-background: #f1f1f1;
     --highlight-background: #011627;
     --highlight-foreground: #d6deeb;
     --highlight-keyword: #c792ea;
@@ -1495,8 +1495,8 @@ button {
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --code-foreground: $dark-code-foreground;
-    --code-background: $dark-code-background;
+    --inline-code-foreground: #c9d1d9;
+    --inline-code-background: #313131;
     --highlight-background: $dark-highlight-background;
     --highlight-foreground: $dark-highlight-foreground;
     --highlight-keyword: $dark-highlight-keyword;
@@ -1518,8 +1518,8 @@ button {
   }
 }
 .light-mode {
-  --code-foreground: #d6deeb;
-  --code-background: #011627;
+  --inline-code-foreground: #24292e;
+  --inline-code-background: #f1f1f1;
   --highlight-background: #011627;
   --highlight-foreground: #d6deeb;
   --highlight-keyword: #c792ea;
@@ -1540,8 +1540,8 @@ button {
   --highlight-deletion: rgba(239,83,80,0.565);
 }
 .dark-mode {
-  --code-foreground: $dark-code-foreground;
-  --code-background: $dark-code-background;
+  --inline-code-foreground: #c9d1d9;
+  --inline-code-background: #313131;
   --highlight-background: $dark-highlight-background;
   --highlight-foreground: $dark-highlight-foreground;
   --highlight-keyword: $dark-highlight-keyword;
@@ -1588,8 +1588,8 @@ code {
   padding: 3px 4px;
   word-wrap: break-word;
   border-radius: 4px;
-  color: var(--code-foreground);
-  background: var(--code-background);
+  color: var(--inline-code-foreground);
+  background: var(--inline-code-background);
 }
 .main-content code {
   font-size: 0.9em;
@@ -2123,8 +2123,8 @@ pre .deletion {
   --mermaid-theme: '';
 }
 :root {
-  --code-foreground: #d6deeb;
-  --code-background: #011627;
+  --inline-code-foreground: #24292e;
+  --inline-code-background: #f1f1f1;
   --highlight-background: #011627;
   --highlight-foreground: #d6deeb;
   --highlight-keyword: #c792ea;
@@ -2146,8 +2146,8 @@ pre .deletion {
 }
 @media (prefers-color-scheme: light) {
   :root {
-    --code-foreground: #d6deeb;
-    --code-background: #011627;
+    --inline-code-foreground: #24292e;
+    --inline-code-background: #f1f1f1;
     --highlight-background: #011627;
     --highlight-foreground: #d6deeb;
     --highlight-keyword: #c792ea;
@@ -2170,8 +2170,8 @@ pre .deletion {
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --code-foreground: $dark-code-foreground;
-    --code-background: $dark-code-background;
+    --inline-code-foreground: #c9d1d9;
+    --inline-code-background: #313131;
     --highlight-background: $dark-highlight-background;
     --highlight-foreground: $dark-highlight-foreground;
     --highlight-keyword: $dark-highlight-keyword;
@@ -2193,8 +2193,8 @@ pre .deletion {
   }
 }
 .light-mode {
-  --code-foreground: #d6deeb;
-  --code-background: #011627;
+  --inline-code-foreground: #24292e;
+  --inline-code-background: #f1f1f1;
   --highlight-background: #011627;
   --highlight-foreground: #d6deeb;
   --highlight-keyword: #c792ea;
@@ -2215,8 +2215,8 @@ pre .deletion {
   --highlight-deletion: rgba(239,83,80,0.565);
 }
 .dark-mode {
-  --code-foreground: $dark-code-foreground;
-  --code-background: $dark-code-background;
+  --inline-code-foreground: #c9d1d9;
+  --inline-code-background: #313131;
   --highlight-background: $dark-highlight-background;
   --highlight-foreground: $dark-highlight-foreground;
   --highlight-keyword: $dark-highlight-keyword;
