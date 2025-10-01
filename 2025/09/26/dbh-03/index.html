@@ -573,7 +573,7 @@ mjx-container[display="true"] + br {
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -667,21 +667,27 @@ mjx-container[display="true"] + br {
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<h1 id="Retrieving-Data-from-a-Table"><a href="#Retrieving-Data-from-a-Table" class="headerlink" title="Retrieving Data from a Table"></a>Retrieving Data from a Table</h1><h2 id="SELECT"><a href="#SELECT" class="headerlink" title="SELECT"></a><code>SELECT</code></h2><p>To display the full content of a table, we can use</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> table_name</span><br></pre></td></tr></table></figure></div>
-<p>But this should not be used in a program, this is because:</p>
-<ul>
-<li>If our program depends on some specific columns, altering the database will probably crashes our program.</li>
-<li>Retrieving the whole table could waste unnecessary hardware resource and bandwidth.<br>And in most circumstances, we are only interested in a specific part of the database. So we need to <em>filter</em> the data by the <code>WHERE</code> clause. The conditions are usually expressed by a column name followed by a comparison operator and the value to which the content of the column is compared. e.g.</li>
-</ul>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div>
-<p>Only the rows where the expression is <em>true</em> will be returned.<br>You can compare to a number, a string constant, another column or the result of a function.</p>
-<p>If the original table doesn’t contain duplicates and forms a valid relation. Then the filtering result will also not contain duplicates and form a valid relation. Hence we can treat is as a “virtual table”, e.g.</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> </span><br><span class="line">	(<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span>) <span class="keyword">AS</span> us_movies</span><br><span class="line">	<span class="keyword">WHERE</span> year_released <span class="keyword">BETWEEN</span> <span class="number">1940</span> <span class="keyword">AND</span> <span class="number">1949</span></span><br></pre></td></tr></table></figure></div>
-<p>Note that reversing the filters will result in a behaviorally equivalent statement (but not necessarily equivalent in performance):</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> </span><br><span class="line">	(<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> year_released <span class="keyword">BETWEEN</span> <span class="number">1940</span> <span class="keyword">AND</span> <span class="number">1949</span>) </span><br><span class="line">		<span class="keyword">AS</span> movies_from_40_to_49</span><br><span class="line">	<span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div>
-<p>Or for a simple query like this, we can just use a <code>AND</code> to combine the conditions:</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span> <span class="keyword">AND</span> year_released <span class="keyword">BETWEEN</span> <span class="number">1940</span> <span class="keyword">AND</span> <span class="number">1949</span></span><br></pre></td></tr></table></figure></div>
+			<h1 id="retrieving-data-from-a-table">Retrieving Data from a Table</h1>
+<h2 id="select"><code>SELECT</code></h2>
+<p>To display the full content of a table, we can use <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> table_name</span><br></pre></td></tr></table></figure></div> But
+this should not be used in a program, this is because: - If our program
+depends on some specific columns, altering the database will probably
+crashes our program. - Retrieving the whole table could waste
+unnecessary hardware resource and bandwidth. And in most circumstances,
+we are only interested in a specific part of the database. So we need to
+<em>filter</em> the data by the <code>WHERE</code> clause. The
+conditions are usually expressed by a column name followed by a
+comparison operator and the value to which the content of the column is
+compared. e.g. <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div> Only the rows where the expression is
+<em>true</em> will be returned. You can compare to a number, a string
+constant, another column or the result of a function.</p>
+<p>If the original table doesn’t contain duplicates and forms a valid
+relation. Then the filtering result will also not contain duplicates and
+form a valid relation. Hence we can treat is as a “virtual table”, e.g.
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> </span><br><span class="line">	(<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span>) <span class="keyword">AS</span> us_movies</span><br><span class="line">	<span class="keyword">WHERE</span> year_released <span class="keyword">BETWEEN</span> <span class="number">1940</span> <span class="keyword">AND</span> <span class="number">1949</span></span><br></pre></td></tr></table></figure></div> Note that reversing the filters will result in a
+behaviorally equivalent statement (but not necessarily equivalent in
+performance): <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> </span><br><span class="line">	(<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> year_released <span class="keyword">BETWEEN</span> <span class="number">1940</span> <span class="keyword">AND</span> <span class="number">1949</span>) </span><br><span class="line">		<span class="keyword">AS</span> movies_from_40_to_49</span><br><span class="line">	<span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div> Or for a simple query like this, we can just
+use a <code>AND</code> to combine the conditions: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span> <span class="keyword">AND</span> year_released <span class="keyword">BETWEEN</span> <span class="number">1940</span> <span class="keyword">AND</span> <span class="number">1949</span></span><br></pre></td></tr></table></figure></div>
 
   <div class="note-large orange">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
@@ -689,20 +695,16 @@ mjx-container[display="true"] + br {
 
     </div>
     <div class="notel-content markdown-body">
-      <p><code>AND</code> has higher precedence than <code>OR</code>. Always precedence where they can help improve readability, even if they are unnecessary.</p>
+      <p><code>AND</code> has higher precedence than <code>OR</code>. Always
+precedence where they can help improve readability, even if they are
+unnecessary.</p>
 
     </div>
-  </div>
-
-<p>Relational operators:</p>
-<ul>
-<li>equal <code>=</code></li>
-<li>not equal <code>&lt;&gt;</code> or <code>!=</code></li>
-<li>less than <code>&lt;</code></li>
-<li>less or equal <code>&lt;=</code></li>
-<li>greater than <code>&gt;</code></li>
-<li>greater or equal <code>&gt;=</code></li>
-</ul>
+  </div></p>
+<p>Relational operators: - equal <code>=</code> - not equal
+<code>&lt;&gt;</code> or <code>!=</code> - less than <code>&lt;</code> -
+less or equal <code>&lt;=</code> - greater than <code>&gt;</code> -
+greater or equal <code>&gt;=</code></p>
 
   <div class="note-large orange">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
@@ -710,11 +712,12 @@ mjx-container[display="true"] + br {
 
     </div>
     <div class="notel-content markdown-body">
-      <p>Beware that most database products implicitly convert one of the sides in a comparison between values of differing types, and the result can be quite unintuitive.</p>
+      <p>Beware that most database products implicitly convert one of the
+sides in a comparison between values of differing types, and the result
+can be quite unintuitive.</p>
 
     </div>
   </div>
-
 
   <div class="note-large green">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
@@ -722,24 +725,20 @@ mjx-container[display="true"] + br {
 
     </div>
     <div class="notel-content markdown-body">
-      <p>We can test a expression’s output by using</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> expression <span class="keyword">AS</span> <span class="keyword">VALUE</span>;</span><br></pre></td></tr></table></figure></div>
+      <p>We can test a expression’s output by using <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> expression <span class="keyword">AS</span> <span class="keyword">VALUE</span>;</span><br></pre></td></tr></table></figure></div></p>
+
     </div>
   </div>
-
-<p>The <code>IN</code> operator can simplify chained <code>OR</code> conditions:</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> country <span class="keyword">IN</span> (<span class="string">'us'</span>, <span class="string">'gb'</span>) <span class="keyword">AND</span> year_released <span class="keyword">BETWEEN</span> <span class="number">1940</span> <span class="keyword">AND</span> <span class="number">1949</span></span><br></pre></td></tr></table></figure></div>
-
-<p>For filtering strings, we can use a regex-like pattern. The <code>LIKE</code> operator will filter all strings that fit the specified pattern. The pattern can have two wildcard:</p>
-<ul>
-<li><code>%</code> means “any number of character, including none”, and</li>
-<li><code>_</code> means “one and only one character”.<br>For example, to select all movies that not have a ‘A’ in their name:</li>
-</ul>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> title <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%A%'</span> <span class="keyword">and</span> title <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%a%'</span></span><br></pre></td></tr></table></figure></div>
-<p>Notice that the behaviorally equivalent statement</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> <span class="built_in">upper</span>(title) <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%A%'</span></span><br></pre></td></tr></table></figure></div>
-<p>is not good from a performance perspective.</p>
-
+<p>The <code>IN</code> operator can simplify chained <code>OR</code>
+conditions: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> country <span class="keyword">IN</span> (<span class="string">'us'</span>, <span class="string">'gb'</span>) <span class="keyword">AND</span> year_released <span class="keyword">BETWEEN</span> <span class="number">1940</span> <span class="keyword">AND</span> <span class="number">1949</span></span><br></pre></td></tr></table></figure></div></p>
+<p>For filtering strings, we can use a regex-like pattern. The
+<code>LIKE</code> operator will filter all strings that fit the
+specified pattern. The pattern can have two wildcard: - <code>%</code>
+means “any number of character, including none”, and - <code>_</code>
+means “one and only one character”. For example, to select all movies
+that not have a ‘A’ in their name: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> title <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%A%'</span> <span class="keyword">and</span> title <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%a%'</span></span><br></pre></td></tr></table></figure></div> Notice that the
+behaviorally equivalent statement <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> <span class="built_in">upper</span>(title) <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%A%'</span></span><br></pre></td></tr></table></figure></div> is not good from a
+performance perspective. 
   <div class="note-large orange">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
       <p>Caution</p>
@@ -749,51 +748,50 @@ mjx-container[display="true"] + br {
       <p>It is not good to use function with columns in conditions.</p>
 
     </div>
-  </div>
-
-<h2 id="Dates"><a href="#Dates" class="headerlink" title="Dates"></a>Dates</h2><p>Beware that the dates have three common formats:</p>
-<ul>
-<li><code>DD/MM/YYYY</code></li>
-<li><code>MM/DD/YYYY</code></li>
-<li><code>YYYY/MM/DD</code><br>To avoid possible issues, <strong>always explicity convert data types before using them</strong>.</li>
-</ul>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- bad</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> forum_posts <span class="keyword">WHERE</span> post_date<span class="operator">&gt;=</span> <span class="string">'2018-03-12'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- good</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> forum_posts <span class="keyword">WHERE</span> post_date<span class="operator">&gt;=</span><span class="type">date</span>(<span class="string">'2018-03-12'</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> forum_posts <span class="keyword">WHERE</span> post_date<span class="operator">&gt;=</span><span class="type">date</span>(<span class="string">'12 March, 2018'</span>);</span><br></pre></td></tr></table></figure></div>
-
-<p>Another frequent mistake is the <code>datetime</code> value. If we compare the <code>datetime</code> s to <code>date</code>s. The SQL engine will not understand that the date part of the <code>datetime</code> value should be equal to the <code>date</code> value.</p>
-<p>Also be aware that the comparisons involving dates and times can be somewhat unintuitive:</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Good</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&gt;=</span> <span class="operator">&lt;</span>March <span class="number">12</span><span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&gt;=</span> <span class="operator">&lt;</span>March <span class="number">12</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span><span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Probably bad</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&lt;=</span> <span class="operator">&lt;</span>March <span class="number">16</span><span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&lt;=</span> <span class="operator">&lt;</span>March <span class="number">16</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span><span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- The possible intention</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&lt;=</span> <span class="operator">&lt;</span>March <span class="number">16</span> <span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span><span class="operator">&gt;</span></span><br></pre></td></tr></table></figure></div>
-
-<p>Date arithmetic can also be problematic, e.g. adding 30 days and adding one month are different. And the syntax of different DBMS is also different. For example, adding a month to the specified date:</p>
-<ul>
-<li>Microsoft SQLServer: <code>dateadd(month, 1, date_col)</code></li>
-<li>IBM DB2: <code>date_col + 1 month</code></li>
-<li>PostgreSQL: <code>date_col + interval'1 month'</code></li>
-<li>MySQL: <code>date_add(date_col, interval 1 month)</code></li>
-<li>Oracle: <code>add_months(date_col, 1)</code> or <code>date_col + decimal_number</code></li>
-<li>SQLite: <code>date(date_col, '1 month')</code></li>
-</ul>
-<h2 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a><code>NULL</code></h2><p>Unlike in the most programming languages, in SQL, <code>NULL</code> is not a <em>value</em>. For example, the conditions</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> column_name <span class="operator">=</span> <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">WHERE</span> column_name <span class="operator">!=</span> <span class="keyword">NULL</span></span><br></pre></td></tr></table></figure></div>
-<p>This two conditions will <em>never be true</em>. This can be intuitively understand as we are comparing the columns to a value <em>we don’t know</em>, so it will never be true.<br>To test whether the column contains a value or not, we need to use the <code>IS</code> operator:</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> column_name <span class="keyword">IS</span> <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">WHERE</span> column_name <span class="keyword">IS</span> <span class="keyword">NOT NULL</span></span><br></pre></td></tr></table></figure></div>
-
-<h2 id="Some-Functions"><a href="#Some-Functions" class="headerlink" title="Some Functions"></a>Some Functions</h2><p>We can of course query some specific columns instead all of them from the database:</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> title, year_released <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div>
-<p>And we need to know the structure of the database to do this. We can see the description of the database by:</p>
-<ul>
-<li><code>desc movies</code> in Oracle, and MySQL</li>
-<li><code>describe table movies</code> in IBM DB2</li>
-<li><code>\d movies</code> in PostgreSQL</li>
-<li><code>.schema movies</code> in SQLite</li>
-</ul>
-<p>One important feature of DBMS is that we can retrieve transformed data through some operators and functions. For example the string concatenation:</p>
-<ul>
-<li><code>'hello' || 'world'</code> in IBM DB2, Oracle, PostgreSQL, and SQLite</li>
-<li><code>'hello' + 'world'</code> in SQLServer</li>
-<li><code>concat('hello', 'world')</code> in MySQL</li>
-</ul>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> title <span class="operator">||</span> <span class="string">' was released in '</span> <span class="operator">||</span> <span class="built_in">cast</span>(year_released <span class="keyword">AS</span> <span class="type">varchar</span>) </span><br><span class="line">	<span class="keyword">AS</span> movie_release</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div>
-
+  </div></p>
+<h2 id="dates">Dates</h2>
+<p>Beware that the dates have three common formats: -
+<code>DD/MM/YYYY</code> - <code>MM/DD/YYYY</code> -
+<code>YYYY/MM/DD</code> To avoid possible issues, <strong>always
+explicity convert data types before using them</strong>.
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- bad</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> forum_posts <span class="keyword">WHERE</span> post_date<span class="operator">&gt;=</span> <span class="string">'2018-03-12'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- good</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> forum_posts <span class="keyword">WHERE</span> post_date<span class="operator">&gt;=</span><span class="type">date</span>(<span class="string">'2018-03-12'</span>);</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> forum_posts <span class="keyword">WHERE</span> post_date<span class="operator">&gt;=</span><span class="type">date</span>(<span class="string">'12 March, 2018'</span>);</span><br></pre></td></tr></table></figure></div></p>
+<p>Another frequent mistake is the <code>datetime</code> value. If we
+compare the <code>datetime</code> s to <code>date</code>s. The SQL
+engine will not understand that the date part of the
+<code>datetime</code> value should be equal to the <code>date</code>
+value.</p>
+<p>Also be aware that the comparisons involving dates and times can be
+somewhat unintuitive: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Good</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&gt;=</span> <span class="operator">&lt;</span>March <span class="number">12</span><span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&gt;=</span> <span class="operator">&lt;</span>March <span class="number">12</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span><span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Probably bad</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&lt;=</span> <span class="operator">&lt;</span>March <span class="number">16</span><span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&lt;=</span> <span class="operator">&lt;</span>March <span class="number">16</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span><span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- The possible intention</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&lt;=</span> <span class="operator">&lt;</span>March <span class="number">16</span> <span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span><span class="operator">&gt;</span></span><br></pre></td></tr></table></figure></div></p>
+<p>Date arithmetic can also be problematic, e.g. adding 30 days and
+adding one month are different. And the syntax of different DBMS is also
+different. For example, adding a month to the specified date: -
+Microsoft SQLServer: <code>dateadd(month, 1, date_col)</code> - IBM DB2:
+<code>date_col + 1 month</code> - PostgreSQL:
+<code>date_col + interval'1 month'</code> - MySQL:
+<code>date_add(date_col, interval 1 month)</code> - Oracle:
+<code>add_months(date_col, 1)</code> or
+<code>date_col + decimal_number</code> - SQLite:
+<code>date(date_col, '1 month')</code></p>
+<h2 id="null"><code>NULL</code></h2>
+<p>Unlike in the most programming languages, in SQL, <code>NULL</code>
+is not a <em>value</em>. For example, the conditions <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> column_name <span class="operator">=</span> <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">WHERE</span> column_name <span class="operator">!=</span> <span class="keyword">NULL</span></span><br></pre></td></tr></table></figure></div> This
+two conditions will <em>never be true</em>. This can be intuitively
+understand as we are comparing the columns to a value <em>we don’t
+know</em>, so it will never be true. To test whether the column contains
+a value or not, we need to use the <code>IS</code> operator:
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> column_name <span class="keyword">IS</span> <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">WHERE</span> column_name <span class="keyword">IS</span> <span class="keyword">NOT NULL</span></span><br></pre></td></tr></table></figure></div></p>
+<h2 id="some-functions">Some Functions</h2>
+<p>We can of course query some specific columns instead all of them from
+the database: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> title, year_released <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div> And we need to know the structure of the
+database to do this. We can see the description of the database by: -
+<code>desc movies</code> in Oracle, and MySQL -
+<code>describe table movies</code> in IBM DB2 - <code>\d movies</code>
+in PostgreSQL - <code>.schema movies</code> in SQLite</p>
+<p>One important feature of DBMS is that we can retrieve transformed
+data through some operators and functions. For example the string
+concatenation: - <code>'hello' || 'world'</code> in IBM DB2, Oracle,
+PostgreSQL, and SQLite - <code>'hello' + 'world'</code> in SQLServer -
+<code>concat('hello', 'world')</code> in MySQL <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> title <span class="operator">||</span> <span class="string">' was released in '</span> <span class="operator">||</span> <span class="built_in">cast</span>(year_released <span class="keyword">AS</span> <span class="type">varchar</span>) </span><br><span class="line">	<span class="keyword">AS</span> movie_release</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div></p>
 
   <div class="note-large orange">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
@@ -801,29 +799,31 @@ mjx-container[display="true"] + br {
 
     </div>
     <div class="notel-content markdown-body">
-      <p>For performance reasons that will be explained later, there is no issue applying a function (or transformation) to data that is returned or constants that were input. You should avoid, though, applying them to columns that are used for comparison.</p>
+      <p>For performance reasons that will be explained later, there is no
+issue applying a function (or transformation) to data that is returned
+or constants that were input. You should avoid, though, applying them to
+columns that are used for comparison.</p>
 
     </div>
   </div>
+<p>Some useful functions: - <code>trunc(num, digits)</code> -
+<code>round(num, digits)</code> - <code>floor(num)</code> -
+<code>ceiling(num)</code> - <code>upper(string)</code> -
+<code>lower(string)</code> - <code>substr(string, start, count)</code> -
+<code>trim(string)</code> -
+<code>replace(string, needle, replace)</code> -
+<code>cast(expr as type)</code></p>
+<h2 id="case...end"><code>CASE...END</code></h2>
+<p>The <code>CASE</code> construct is similar to the <code>switch</code>
+in Java or other pattern matching constructs. For example <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CASE</span> <span class="built_in">upper</span>(color)</span><br><span class="line">	<span class="keyword">WHEN</span> <span class="string">'Y'</span> <span class="keyword">THEN</span> <span class="string">'Color'</span></span><br><span class="line">	<span class="keyword">WHEN</span> <span class="string">'N'</span> <span class="keyword">THEN</span> <span class="string">'B&amp;W'</span></span><br><span class="line">	<span class="keyword">ELSE</span> <span class="string">'?'</span></span><br><span class="line"><span class="keyword">END</span> <span class="keyword">AS</span> color</span><br></pre></td></tr></table></figure></div>
+In a <code>CASE</code> statement, the value is tested against various
+values. If a match is found, the corresponding value is returned, If
+there is no match and there is no <code>ELSE</code> clause, a
+<code>NULL</code> is returned.</p>
+<p>Same as the <code>WHERE</code> clauses, the <code>NULL</code> values
+cannot be tested directly in a <code>WHEN</code> clause. We need to use
+the following instead: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CASE</span></span><br><span class="line">	<span class="keyword">WHEN</span> died <span class="keyword">IS</span> <span class="keyword">NULL</span> <span class="keyword">THEN</span> <span class="string">'alive and kicking'</span></span><br><span class="line">	<span class="keyword">ELSE</span> <span class="string">'passed away'</span></span><br><span class="line"><span class="keyword">END</span> <span class="keyword">AS</span> status</span><br></pre></td></tr></table></figure></div></p>
 
-<p>Some useful functions:</p>
-<ul>
-<li><code>trunc(num, digits)</code></li>
-<li><code>round(num, digits)</code></li>
-<li><code>floor(num)</code></li>
-<li><code>ceiling(num)</code></li>
-<li><code>upper(string)</code></li>
-<li><code>lower(string)</code></li>
-<li><code>substr(string, start, count)</code></li>
-<li><code>trim(string)</code></li>
-<li><code>replace(string, needle, replace)</code></li>
-<li><code>cast(expr as type)</code></li>
-</ul>
-<h2 id="CASE-END"><a href="#CASE-END" class="headerlink" title="CASE...END"></a><code>CASE...END</code></h2><p>The <code>CASE</code> construct is similar to the <code>switch</code> in Java or other pattern matching constructs. For example</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CASE</span> <span class="built_in">upper</span>(color)</span><br><span class="line">	<span class="keyword">WHEN</span> <span class="string">'Y'</span> <span class="keyword">THEN</span> <span class="string">'Color'</span></span><br><span class="line">	<span class="keyword">WHEN</span> <span class="string">'N'</span> <span class="keyword">THEN</span> <span class="string">'B&amp;W'</span></span><br><span class="line">	<span class="keyword">ELSE</span> <span class="string">'?'</span></span><br><span class="line"><span class="keyword">END</span> <span class="keyword">AS</span> color</span><br></pre></td></tr></table></figure></div>
-<p>In a <code>CASE</code> statement, the value is tested against various values. If a match is found, the corresponding value is returned, If there is no match and there is no <code>ELSE</code> clause, a <code>NULL</code> is returned.</p>
-<p>Same as the <code>WHERE</code> clauses, the <code>NULL</code> values cannot be tested directly in a <code>WHEN</code> clause. We need to use the following instead:</p>
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CASE</span></span><br><span class="line">	<span class="keyword">WHEN</span> died <span class="keyword">IS</span> <span class="keyword">NULL</span> <span class="keyword">THEN</span> <span class="string">'alive and kicking'</span></span><br><span class="line">	<span class="keyword">ELSE</span> <span class="string">'passed away'</span></span><br><span class="line"><span class="keyword">END</span> <span class="keyword">AS</span> status</span><br></pre></td></tr></table></figure></div>
 		</div>
 
 		
@@ -970,7 +970,7 @@ mjx-container[display="true"] + br {
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
 		<div class="page-title">Principles of Database Systems (H) Lecture 3 Notes</div>
-		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Retrieving-Data-from-a-Table"><span class="nav-text">Retrieving Data from a Table</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SELECT"><span class="nav-text">SELECT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dates"><span class="nav-text">Dates</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NULL"><span class="nav-text">NULL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Some-Functions"><span class="nav-text">Some Functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CASE-END"><span class="nav-text">CASE...END</span></a></li></ol></li></ol>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#retrieving-data-from-a-table"><span class="nav-text">Retrieving Data from a Table</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#select"><span class="nav-text">SELECT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dates"><span class="nav-text">Dates</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-text">NULL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#some-functions"><span class="nav-text">Some Functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#case...end"><span class="nav-text">CASE...END</span></a></li></ol></li></ol>
 
 	</div>
 </div>
@@ -997,7 +997,7 @@ mjx-container[display="true"] + br {
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        10 posts in total
+                        12 posts in total
                     </span>
                     
                 </p>
