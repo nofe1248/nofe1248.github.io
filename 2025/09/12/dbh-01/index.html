@@ -140,7 +140,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-09-12T10:33:02.000Z">
-<meta property="article:modified_time" content="2025-09-26T10:38:26.777Z">
+<meta property="article:modified_time" content="2025-10-10T05:19:32.908Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Principles of Database Systems">
 <meta property="article:tag" content="Notes">
@@ -624,8 +624,8 @@ mjx-container[display="true"] + br {
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-09-26 18:38:26</span>
-            <span class="mobile">2025-09-26 18:38:26</span>
+            <span class="desktop">2025-10-10 13:19:32</span>
+            <span class="mobile">2025-10-10 13:19:32</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -683,27 +683,64 @@ The central idea was to have one system doing once and for all the
 boring data storage/retrieval part.</p>
 <h3 id="a-bit-of-history">A bit of history</h3>
 <p>In early days database applications were built directly on top of
-file systems. However, it suffers from many issues, including: - Data
-redundancy and inconsistency - Difficulty in accessing data - Data
-isolation - Integrity problems - Atomicity of updates - Concurrent
-access by multiple users - Security problems</p>
-<p>1980s: - Research relational prototypes evolve into commercial
-systems - SQL becomes industrial standard - Parallel and distributed
-database systems - Wisconsin, IBM, Teradata - Object-oriented database
-systems</p>
-<p>1990s: - Large <em>decision support</em> and <em>data-mining
-applications</em> - Large multi-terabyte data warehouses - Emergence of
-Web commerce</p>
-<p>2000s - Big data storage systems - Google BigTable, Yahoo PNuts,
-Amazon - NoSQL systems - Big data analysis: beyond SQL - Map Reduce,
-etc.</p>
-<p>2010s - SQL reloaded - SQL front end to Map Reduce systems -
-Massively parallel database systems - Multi-core main-memory
-databases</p>
+file systems. However, it suffers from many issues, including:</p>
+<ul>
+<li>Data redundancy and inconsistency</li>
+<li>Difficulty in accessing data</li>
+<li>Data isolation</li>
+<li>Integrity problems</li>
+<li>Atomicity of updates</li>
+<li>Concurrent access by multiple users</li>
+<li>Security problems</li>
+</ul>
+<p>1980s:</p>
+<ul>
+<li>Research relational prototypes evolve into commercial systems
+<ul>
+<li>SQL becomes industrial standard</li>
+</ul></li>
+<li>Parallel and distributed database systems
+<ul>
+<li>Wisconsin, IBM, Teradata</li>
+</ul></li>
+<li>Object-oriented database systems</li>
+</ul>
+<p>1990s:</p>
+<ul>
+<li>Large <em>decision support</em> and <em>data-mining
+applications</em></li>
+<li>Large multi-terabyte data warehouses</li>
+<li>Emergence of Web commerce</li>
+</ul>
+<p>2000s:</p>
+<ul>
+<li>Big data storage systems
+<ul>
+<li>Google BigTable, Yahoo PNuts, Amazon</li>
+<li>NoSQL systems</li>
+</ul></li>
+<li>Big data analysis: beyond SQL
+<ul>
+<li>Map Reduce, etc.</li>
+</ul></li>
+</ul>
+<p>2010s:</p>
+<ul>
+<li>SQL reloaded
+<ul>
+<li>SQL front end to Map Reduce systems</li>
+<li>Massively parallel database systems</li>
+<li>Multi-core main-memory databases</li>
+</ul></li>
+</ul>
 <h2 id="relational-database">Relational Database</h2>
 <p>The <em>relational database</em> is based on the relational model of
-data, it: - organizes data into one or more tables - rows are also
-called records or tuples - columns are also called attributes</p>
+data, it:</p>
+<ul>
+<li>organizes data into one or more tables</li>
+<li>rows are also called records or tuples</li>
+<li>columns are also called attributes</li>
+</ul>
 <p>Each column in the table stores a piece of data, and one row
 represents a “known fact”. For example:</p>
 <table>
@@ -741,11 +778,12 @@ represents a “known fact”. For example:</p>
 <p>The relational database prohibits different records. Since there are
 no duplicate, we need to identify what allows you to differentiate one
 row from another. It may be one column, or one set of columns, known
-collectively as a <em>key</em>. It may happen that several different
-keys are available. One of them is (arbitrarily) singled out and called
-the <em>primary key</em>. We usually choose the simplest one. In
-practice, to simplify the issue, we often add a numerical attribute
-(often a increasing integer) as the primary key.</p>
+collectively as a <em>key</em>.</p>
+<p>It may happen that several different keys are available. One of them
+is (arbitrarily) singled out and called the <em>primary key</em>. We
+usually choose the simplest one. In practice, to simplify the issue, we
+often add a numerical attribute (often a increasing integer) as the
+primary key.</p>
 <h3 id="normalization">Normalization</h3>
 <p>One common problem with databases is that data may be written at
 different time by different people. If you let them write data in the
@@ -821,7 +859,7 @@ the primary key.</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-09-26 18:38:26
+                    :</strong> 2025-10-10 13:19:32
             </li>
         
         <li>

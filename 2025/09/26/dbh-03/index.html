@@ -140,7 +140,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-09-26T10:32:39.000Z">
-<meta property="article:modified_time" content="2025-09-26T10:41:26.615Z">
+<meta property="article:modified_time" content="2025-10-10T05:19:14.950Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Principles of Database Systems">
 <meta property="article:tag" content="Notes">
@@ -624,8 +624,8 @@ mjx-container[display="true"] + br {
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-09-26 18:41:26</span>
-            <span class="mobile">2025-09-26 18:41:26</span>
+            <span class="desktop">2025-10-10 13:19:14</span>
+            <span class="mobile">2025-10-10 13:19:14</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -678,17 +678,21 @@ mjx-container[display="true"] + br {
 			<h1 id="retrieving-data-from-a-table">Retrieving Data from a Table</h1>
 <h2 id="select"><code>SELECT</code></h2>
 <p>To display the full content of a table, we can use <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> table_name</span><br></pre></td></tr></table></figure></div> But
-this should not be used in a program, this is because: - If our program
-depends on some specific columns, altering the database will probably
-crashes our program. - Retrieving the whole table could waste
-unnecessary hardware resource and bandwidth. And in most circumstances,
-we are only interested in a specific part of the database. So we need to
-<em>filter</em> the data by the <code>WHERE</code> clause. The
-conditions are usually expressed by a column name followed by a
-comparison operator and the value to which the content of the column is
-compared. e.g. <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div> Only the rows where the expression is
-<em>true</em> will be returned. You can compare to a number, a string
-constant, another column or the result of a function.</p>
+this should not be used in a program, this is because:</p>
+<ul>
+<li>If our program depends on some specific columns, altering the
+database will probably crashes our program.</li>
+<li>Retrieving the whole table could waste unnecessary hardware resource
+and bandwidth.</li>
+</ul>
+<p>And in most circumstances, we are only interested in a specific part
+of the database. So we need to <em>filter</em> the data by the
+<code>WHERE</code> clause. The conditions are usually expressed by a
+column name followed by a comparison operator and the value to which the
+content of the column is compared. e.g. <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> country <span class="operator">=</span> <span class="string">'us'</span></span><br></pre></td></tr></table></figure></div> Only the rows
+where the expression is <em>true</em> will be returned.</p>
+<p>You can compare to a number, a string constant, another column or the
+result of a function.</p>
 <p>If the original table doesn’t contain duplicates and forms a valid
 relation. Then the filtering result will also not contain duplicates and
 form a valid relation. Hence we can treat is as a “virtual table”, e.g.
@@ -709,10 +713,15 @@ unnecessary.</p>
 
     </div>
   </div></p>
-<p>Relational operators: - equal <code>=</code> - not equal
-<code>&lt;&gt;</code> or <code>!=</code> - less than <code>&lt;</code> -
-less or equal <code>&lt;=</code> - greater than <code>&gt;</code> -
-greater or equal <code>&gt;=</code></p>
+<p>Relational operators:</p>
+<ul>
+<li>equal <code>=</code></li>
+<li>not equal <code>&lt;&gt;</code> or <code>!=</code></li>
+<li>less than <code>&lt;</code></li>
+<li>less or equal <code>&lt;=</code></li>
+<li>greater than <code>&gt;</code></li>
+<li>greater or equal <code>&gt;=</code></li>
+</ul>
 
   <div class="note-large orange">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
@@ -741,12 +750,16 @@ can be quite unintuitive.</p>
 conditions: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> country <span class="keyword">IN</span> (<span class="string">'us'</span>, <span class="string">'gb'</span>) <span class="keyword">AND</span> year_released <span class="keyword">BETWEEN</span> <span class="number">1940</span> <span class="keyword">AND</span> <span class="number">1949</span></span><br></pre></td></tr></table></figure></div></p>
 <p>For filtering strings, we can use a regex-like pattern. The
 <code>LIKE</code> operator will filter all strings that fit the
-specified pattern. The pattern can have two wildcard: - <code>%</code>
-means “any number of character, including none”, and - <code>_</code>
-means “one and only one character”. For example, to select all movies
-that not have a ‘A’ in their name: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> title <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%A%'</span> <span class="keyword">and</span> title <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%a%'</span></span><br></pre></td></tr></table></figure></div> Notice that the
-behaviorally equivalent statement <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> <span class="built_in">upper</span>(title) <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%A%'</span></span><br></pre></td></tr></table></figure></div> is not good from a
-performance perspective. 
+specified pattern. The pattern can have two wildcard:</p>
+<ul>
+<li><code>%</code> means “any number of character, including none”,
+and</li>
+<li><code>_</code> means “one and only one character”.</li>
+</ul>
+<p>For example, to select all movies that not have a ‘A’ in their name:
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> title <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%A%'</span> <span class="keyword">and</span> title <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%a%'</span></span><br></pre></td></tr></table></figure></div> Notice that the behaviorally equivalent statement
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> <span class="built_in">upper</span>(title) <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'%A%'</span></span><br></pre></td></tr></table></figure></div> is not good from a performance perspective.
+
   <div class="note-large orange">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
       <p>Caution</p>
@@ -772,14 +785,16 @@ value.</p>
 somewhat unintuitive: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Good</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&gt;=</span> <span class="operator">&lt;</span>March <span class="number">12</span><span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&gt;=</span> <span class="operator">&lt;</span>March <span class="number">12</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span><span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Probably bad</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&lt;=</span> <span class="operator">&lt;</span>March <span class="number">16</span><span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&lt;=</span> <span class="operator">&lt;</span>March <span class="number">16</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span><span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- The possible intention</span></span><br><span class="line"><span class="keyword">WHERE</span> issued <span class="operator">&lt;=</span> <span class="operator">&lt;</span>March <span class="number">16</span> <span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span><span class="operator">&gt;</span></span><br></pre></td></tr></table></figure></div></p>
 <p>Date arithmetic can also be problematic, e.g. adding 30 days and
 adding one month are different. And the syntax of different DBMS is also
-different. For example, adding a month to the specified date: -
-Microsoft SQLServer: <code>dateadd(month, 1, date_col)</code> - IBM DB2:
-<code>date_col + 1 month</code> - PostgreSQL:
-<code>date_col + interval'1 month'</code> - MySQL:
-<code>date_add(date_col, interval 1 month)</code> - Oracle:
-<code>add_months(date_col, 1)</code> or
-<code>date_col + decimal_number</code> - SQLite:
-<code>date(date_col, '1 month')</code></p>
+different. For example, adding a month to the specified date:</p>
+<ul>
+<li>Microsoft SQLServer: <code>dateadd(month, 1, date_col)</code></li>
+<li>IBM DB2: <code>date_col + 1 month</code></li>
+<li>PostgreSQL: <code>date_col + interval'1 month'</code></li>
+<li>MySQL: <code>date_add(date_col, interval 1 month)</code></li>
+<li>Oracle: <code>add_months(date_col, 1)</code> or
+<code>date_col + decimal_number</code></li>
+<li>SQLite: <code>date(date_col, '1 month')</code></li>
+</ul>
 <h2 id="null"><code>NULL</code></h2>
 <p>Unlike in the most programming languages, in SQL, <code>NULL</code>
 is not a <em>value</em>. For example, the conditions <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WHERE</span> column_name <span class="operator">=</span> <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">WHERE</span> column_name <span class="operator">!=</span> <span class="keyword">NULL</span></span><br></pre></td></tr></table></figure></div> This
@@ -814,13 +829,19 @@ columns that are used for comparison.</p>
 
     </div>
   </div>
-<p>Some useful functions: - <code>trunc(num, digits)</code> -
-<code>round(num, digits)</code> - <code>floor(num)</code> -
-<code>ceiling(num)</code> - <code>upper(string)</code> -
-<code>lower(string)</code> - <code>substr(string, start, count)</code> -
-<code>trim(string)</code> -
-<code>replace(string, needle, replace)</code> -
-<code>cast(expr as type)</code></p>
+<p>Some useful functions:</p>
+<ul>
+<li><code>trunc(num, digits)</code></li>
+<li><code>round(num, digits)</code></li>
+<li><code>floor(num)</code></li>
+<li><code>ceiling(num)</code></li>
+<li><code>upper(string)</code></li>
+<li><code>lower(string)</code></li>
+<li><code>substr(string, start, count)</code></li>
+<li><code>trim(string)</code></li>
+<li><code>replace(string, needle, replace)</code></li>
+<li><code>cast(expr as type)</code></li>
+</ul>
 <h2 id="case...end"><code>CASE...END</code></h2>
 <p>The <code>CASE</code> construct is similar to the <code>switch</code>
 in Java or other pattern matching constructs. For example <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CASE</span> <span class="built_in">upper</span>(color)</span><br><span class="line">	<span class="keyword">WHEN</span> <span class="string">'Y'</span> <span class="keyword">THEN</span> <span class="string">'Color'</span></span><br><span class="line">	<span class="keyword">WHEN</span> <span class="string">'N'</span> <span class="keyword">THEN</span> <span class="string">'B&amp;W'</span></span><br><span class="line">	<span class="keyword">ELSE</span> <span class="string">'?'</span></span><br><span class="line"><span class="keyword">END</span> <span class="keyword">AS</span> color</span><br></pre></td></tr></table></figure></div>
@@ -845,7 +866,7 @@ the following instead: <div class="code-container" data-rel="Sql"><figure class=
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-09-26 18:41:26
+                    :</strong> 2025-10-10 13:19:14
             </li>
         
         <li>

@@ -140,7 +140,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/redefine-og.webp">
 <meta property="article:published_time" content="2025-09-19T10:33:02.000Z">
-<meta property="article:modified_time" content="2025-09-26T10:39:51.371Z">
+<meta property="article:modified_time" content="2025-10-10T05:19:55.220Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Principles of Database Systems">
 <meta property="article:tag" content="Notes">
@@ -624,8 +624,8 @@ mjx-container[display="true"] + br {
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-09-26 18:39:51</span>
-            <span class="mobile">2025-09-26 18:39:51</span>
+            <span class="desktop">2025-10-10 13:19:55</span>
+            <span class="mobile">2025-10-10 13:19:55</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -679,14 +679,19 @@ mjx-container[display="true"] + br {
 <p>To manage data in a database, a full-blown language will introduce
 too much complexity to both users and database systems. What we need is
 a special DSL that specializes in data query and manipulation, hence SQL
-was invented. The SQL is composed of four parts: - Data Manipulation
-Language, DML - Data Definition Language, DDL - Data Query Language, DQL
-- Data Control Language, DCL The most common used one is the DQL, or
-more specifically, the <code>SELECT</code> statement: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> conditions</span><br></pre></td></tr></table></figure></div> The
-DDL, deals with tables and other database objects. There are three
-statements: <code>CREATE</code>, <code>ALTER</code>, and
-<code>DROP</code>: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Create a table</span></span><br><span class="line"><span class="keyword">CREATE TABLE</span> Users (</span><br><span class="line">	id <span class="type">INT</span> AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,</span><br><span class="line">	username <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT NULL</span>,</span><br><span class="line">	email <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT NULL</span>,</span><br><span class="line">	birthdate <span class="type">DATE</span>,</span><br><span class="line">	is_active <span class="type">BOOLEAN</span> <span class="keyword">DEFAULT</span> <span class="literal">TRUE</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER TABLE</span> table_name</span><br><span class="line"><span class="comment">-- Add column</span></span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">COLUMN</span> birth_date <span class="type">DATE</span>;</span><br><span class="line"><span class="comment">-- Modify column's datatype</span></span><br><span class="line">MODIFY <span class="keyword">COLUMN</span> salary <span class="type">DECIMAL</span>(<span class="number">10</span>,<span class="number">2</span>);</span><br><span class="line"><span class="comment">-- Change column's name</span></span><br><span class="line">CHANGE <span class="keyword">COLUMN</span> old_column_name new_column_name datatype;</span><br><span class="line"><span class="comment">-- Delete a column</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">COLUMN</span> birth_date;</span><br><span class="line"><span class="comment">-- Add a primary key</span></span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">PRIMARY KEY</span> (column_name);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Add a foreign key</span></span><br><span class="line"><span class="keyword">ADD CONSTRAINT</span> fk_customer</span><br><span class="line"><span class="keyword">FOREIGN KEY</span> (customer_id)</span><br><span class="line"><span class="keyword">REFERENCES</span> customers (customer_id);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Rename the table</span></span><br><span class="line">RENAME <span class="keyword">TO</span> staff;</span><br></pre></td></tr></table></figure></div> The DML includes <code>INSERT</code>,
-<code>UPDATE</code>, and <code>DELETE</code>: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT INTO</span> table_name (column1, column2, ...) <span class="keyword">VALUES</span> (value1, value2, ...);</span><br><span class="line"></span><br><span class="line"><span class="keyword">UPDATE</span> table_name <span class="keyword">SET</span> <span class="keyword">column</span><span class="operator">=</span><span class="keyword">value</span> <span class="keyword">WHERE</span> conditions;</span><br><span class="line"></span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> conditions</span><br></pre></td></tr></table></figure></div></p>
+was invented. The SQL is composed of four parts:</p>
+<ul>
+<li>Data Manipulation Language, DML</li>
+<li>Data Definition Language, DDL</li>
+<li>Data Query Language, DQL</li>
+<li>Data Control Language, DCL</li>
+</ul>
+<p>The most common used one is the DQL, or more specifically, the
+<code>SELECT</code> statement: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column_name <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> conditions</span><br></pre></td></tr></table></figure></div> The DDL, deals with tables
+and other database objects. There are three statements:
+<code>CREATE</code>, <code>ALTER</code>, and <code>DROP</code>:
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Create a table</span></span><br><span class="line"><span class="keyword">CREATE TABLE</span> Users (</span><br><span class="line">	id <span class="type">INT</span> AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,</span><br><span class="line">	username <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT NULL</span>,</span><br><span class="line">	email <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT NULL</span>,</span><br><span class="line">	birthdate <span class="type">DATE</span>,</span><br><span class="line">	is_active <span class="type">BOOLEAN</span> <span class="keyword">DEFAULT</span> <span class="literal">TRUE</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER TABLE</span> table_name</span><br><span class="line"><span class="comment">-- Add column</span></span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">COLUMN</span> birth_date <span class="type">DATE</span>;</span><br><span class="line"><span class="comment">-- Modify column's datatype</span></span><br><span class="line">MODIFY <span class="keyword">COLUMN</span> salary <span class="type">DECIMAL</span>(<span class="number">10</span>,<span class="number">2</span>);</span><br><span class="line"><span class="comment">-- Change column's name</span></span><br><span class="line">CHANGE <span class="keyword">COLUMN</span> old_column_name new_column_name datatype;</span><br><span class="line"><span class="comment">-- Delete a column</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">COLUMN</span> birth_date;</span><br><span class="line"><span class="comment">-- Add a primary key</span></span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">PRIMARY KEY</span> (column_name);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Add a foreign key</span></span><br><span class="line"><span class="keyword">ADD CONSTRAINT</span> fk_customer</span><br><span class="line"><span class="keyword">FOREIGN KEY</span> (customer_id)</span><br><span class="line"><span class="keyword">REFERENCES</span> customers (customer_id);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Rename the table</span></span><br><span class="line">RENAME <span class="keyword">TO</span> staff;</span><br></pre></td></tr></table></figure></div> The DML includes <code>INSERT</code>, <code>UPDATE</code>,
+and <code>DELETE</code>: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT INTO</span> table_name (column1, column2, ...) <span class="keyword">VALUES</span> (value1, value2, ...);</span><br><span class="line"></span><br><span class="line"><span class="keyword">UPDATE</span> table_name <span class="keyword">SET</span> <span class="keyword">column</span><span class="operator">=</span><span class="keyword">value</span> <span class="keyword">WHERE</span> conditions;</span><br><span class="line"></span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> conditions</span><br></pre></td></tr></table></figure></div></p>
 
   <div class="note-large orange">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
@@ -722,27 +727,43 @@ in SQL, but not enforced for query results in SQL.</p>
 
     </div>
   </div>
-<p>Text datatypes: - <code>char(length)</code>: Fixed-length strings. -
-<code>varchar(max_length)</code>: Variable-length strings that are
-limited by a maximum length. - <code>varchar2(max_length)</code>: Only
-appears in Oracle SQL. - <code>text</code>: Stores big text (~10KB). -
-<code>clob</code>: Stores much bigger texts (up to 4GB). -
-<code>nchar</code>/<code>nvarchar</code>: Unicode equivalent of
-<code>char</code>/<code>varchar</code>. Numerical datatypes: -
-<code>int</code>: 4-byte integer type. - <code>float</code>:
-IEEE-compliant 4-byte floating point type. -
-<code>numeric(precision, scale)</code>: <code>precision</code> is the
-number of digits, and the <code>scale</code> is the number of these
-digits after the decimal point. Data datatypes: - <code>date</code>:
-Date and times (down to seconds with Oracle, not with others). -
-<code>datatime</code>: Also date and times, down to seconds (other than
-Oracle, DB2, and PostgreSQL) - <code>timestamp</code>: down to <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="4.495ex" height="2.005ex" role="img" focusable="false" viewBox="0 -864 1986.7 886"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" transform="translate(500,0)"></path></g><g data-mml-node="TeXAtom" transform="translate(1033,393.1) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mo"><path data-c="2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path></g><g data-mml-node="mn" transform="translate(778,0)"><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path></g></g></g></g></g></svg></mjx-container></span> second, replace datetime in
-DB2/PostgreSQL. Binary datatypes - <code>raw(max_length)</code>:
-Fixed-length binaries. - <code>varbinary(max_length)</code>:
-Variable-length binaries that can have a maximum length of
-<code>max_length</code> bits. - <code>blob</code>: Binary equivalent of
-<code>clob</code>. - <code>bytea</code>: Same as <code>blob</code>, used
-in PostgreSQL.</p>
+<p>Text datatypes:</p>
+<ul>
+<li><code>char(length)</code>: Fixed-length strings.</li>
+<li><code>varchar(max_length)</code>: Variable-length strings that are
+limited by a maximum length.</li>
+<li><code>varchar2(max_length)</code>: Only appears in Oracle SQL.</li>
+<li><code>text</code>: Stores big text (~10KB).</li>
+<li><code>clob</code>: Stores much bigger texts (up to 4GB).</li>
+<li><code>nchar</code>/<code>nvarchar</code>: Unicode equivalent of
+<code>char</code>/<code>varchar</code>.</li>
+</ul>
+<p>Numerical datatypes:</p>
+<ul>
+<li><code>int</code>: 4-byte integer type.</li>
+<li><code>float</code>: IEEE-compliant 4-byte floating point type.</li>
+<li><code>numeric(precision, scale)</code>: <code>precision</code> is
+the number of digits, and the <code>scale</code> is the number of these
+digits after the decimal point.</li>
+</ul>
+<p>Data datatypes:</p>
+<ul>
+<li><code>date</code>: Date and times (down to seconds with Oracle, not
+with others).</li>
+<li><code>datatime</code>: Also date and times, down to seconds (other
+than Oracle, DB2, and PostgreSQL)</li>
+<li><code>timestamp</code>: down to <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="4.495ex" height="2.005ex" role="img" focusable="false" viewBox="0 -864 1986.7 886"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" transform="translate(500,0)"></path></g><g data-mml-node="TeXAtom" transform="translate(1033,393.1) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mo"><path data-c="2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path></g><g data-mml-node="mn" transform="translate(778,0)"><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z"></path></g></g></g></g></g></svg></mjx-container></span> second, replace datetime in
+DB2/PostgreSQL.</li>
+</ul>
+<p>Binary datatypes</p>
+<ul>
+<li><code>raw(max_length)</code>: Fixed-length binaries.</li>
+<li><code>varbinary(max_length)</code>: Variable-length binaries that
+can have a maximum length of <code>max_length</code> bits.</li>
+<li><code>blob</code>: Binary equivalent of <code>clob</code>.</li>
+<li><code>bytea</code>: Same as <code>blob</code>, used in
+PostgreSQL.</li>
+</ul>
 <p>By default, columns are permitted to have a <code>null</code> as it
 value. To prohibit this, use <code>NOT NULL</code> decorator when
 creating the column.</p>
@@ -757,10 +778,15 @@ primary key, so we use the <code>primary key</code> constraint:
 <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE TABLE</span> people</span><br><span class="line">(</span><br><span class="line">	peopleid <span class="type">int</span> <span class="keyword">not null</span></span><br><span class="line">		<span class="keyword">primary key</span>,</span><br><span class="line">	first_name <span class="type">varchar</span>(<span class="number">30</span>),</span><br><span class="line">	surname <span class="type">varchar</span>(<span class="number">30</span>) <span class="keyword">not null</span>,</span><br><span class="line">	born <span class="type">numeric</span>(<span class="number">4</span>),</span><br><span class="line">	died <span class="type">numeric</span>(<span class="number">4</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div> Note that the <code>primary key</code> constraint implies
 <code>not null</code>. SQL will not warn about redundant constraints.
 Another potential problem is the capitalization. For example, the three
-strings: - <code>"FOO"</code> - <code>"foo"</code> - <code>"Foo"</code>
-is considered to be <em>not equal</em> in Oracle, PostgreSQL, and DB2,
-but they are <em>equal</em> in SQL Server, MySQL, and SQLite. So we need
-to standardize the names, using <code>unique</code> constraint for
+strings:</p>
+<ul>
+<li><code>"FOO"</code></li>
+<li><code>"foo"</code></li>
+<li><code>"Foo"</code></li>
+</ul>
+<p>is considered to be <em>not equal</em> in Oracle, PostgreSQL, and
+DB2, but they are <em>equal</em> in SQL Server, MySQL, and SQLite. So we
+need to standardize the names, using <code>unique</code> constraint for
 uniqueness and <code>check</code> for standardization: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE TABLE</span> people</span><br><span class="line">(</span><br><span class="line">	peopleid <span class="type">int</span> <span class="keyword">not null</span></span><br><span class="line">		<span class="keyword">primary key</span>,</span><br><span class="line">	first_name <span class="type">varchar</span>(<span class="number">30</span>),</span><br><span class="line">		<span class="keyword">check</span>(first_name <span class="operator">=</span> <span class="built_in">upper</span>(first_name)),</span><br><span class="line">	surname <span class="type">varchar</span>(<span class="number">30</span>) <span class="keyword">not null</span>,</span><br><span class="line">		<span class="keyword">check</span>(surname <span class="operator">=</span> <span class="built_in">upper</span>(surname)),</span><br><span class="line">	born <span class="type">numeric</span>(<span class="number">4</span>),</span><br><span class="line">	died <span class="type">numeric</span>(<span class="number">4</span>),</span><br><span class="line">	<span class="keyword">unique</span>(first_name, surname)</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div></p>
 
 		</div>
@@ -776,7 +802,7 @@ uniqueness and <code>check</code> for standardization: <div class="code-containe
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-09-26 18:39:51
+                    :</strong> 2025-10-10 13:19:55
             </li>
         
         <li>
