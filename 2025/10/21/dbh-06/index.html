@@ -123,7 +123,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2025/09/29/dbh-04/"/>
+    <link rel="canonical" href="http://example.com/2025/10/21/dbh-06/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -133,14 +133,14 @@
         
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Principles of Database Systems (H) Lecture 4 Notes">
-<meta property="og:url" content="http://example.com/2025/09/29/dbh-04/index.html">
+<meta property="og:title" content="Principles of Database Systems (H) Lecture 6 Notes">
+<meta property="og:url" content="http://example.com/2025/10/21/dbh-06/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/redefine-og.webp">
-<meta property="article:published_time" content="2025-09-29T06:00:24.000Z">
-<meta property="article:modified_time" content="2025-10-10T05:10:58.988Z">
+<meta property="article:published_time" content="2025-10-21T14:03:57.000Z">
+<meta property="article:modified_time" content="2025-10-21T14:14:39.808Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Principles of Database Systems">
 <meta property="article:tag" content="Notes">
@@ -157,7 +157,7 @@
     
     <title>
         
-            Principles of Database Systems (H) Lecture 4 Notes | nothing here
+            Principles of Database Systems (H) Lecture 6 Notes | nothing here
         
     </title>
 
@@ -596,7 +596,7 @@ mjx-container[display="true"] + br {
 		<div class="article-title relative w-full">
 			
 			<div class="w-full flex items-center pt-6 justify-start">
-				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Principles of Database Systems (H) Lecture 4 Notes</h1>
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Principles of Database Systems (H) Lecture 6 Notes</h1>
 			</div>
 			
 		</div>
@@ -617,15 +617,15 @@ mjx-container[display="true"] + br {
 					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2025-09-29 14:24</span>
-        <span class="mobile">2025-09-29 14:24</span>
+        <span class="desktop">2025-10-21 22:03:57</span>
+        <span class="mobile">2025-10-21 22:03:57</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-10-10 13:10:58</span>
-            <span class="mobile">2025-10-10 13:10:58</span>
+            <span class="desktop">2025-10-21 22:14:39</span>
+            <span class="mobile">2025-10-21 22:14:39</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -651,7 +651,7 @@ mjx-container[display="true"] + br {
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.3k Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.2k Words</span>
         </span>
     
     
@@ -675,13 +675,97 @@ mjx-container[display="true"] + br {
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<h1 id="advanced-queries">Advanced Queries</h1>
-<h2 id="distinct"><code>DISTINCT</code></h2>
-<p>To obtain a valid relation, we must ensure that there are no
-duplicate identifiers in the result set. For example, the naive query
-below <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> year_released<span class="operator">=</span><span class="number">2000</span></span><br></pre></td></tr></table></figure></div> This query will return a result set that contains
-many identical rows. In other words, we may obtaining a table, but it’s
-not a relation because many rows cannot be distinguished.
+			<h1 id="postprocessing-queries">Postprocessing Queries</h1>
+<h2 id="sorting">Sorting</h2>
+<p>We have a single construct in SQL that sorts the result set:
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> title, year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">ORDER</span> <span class="keyword">BY</span> year_released</span><br></pre></td></tr></table></figure></div> This will return all movies, starting with the <em>oldest
+one</em>. The default order is ascending, we can also use the keywords
+<code>DESC</code> and <code>ASC</code> to control it: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c.country_name, m.title, m.year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies m</span><br><span class="line">		<span class="keyword">INNER</span> <span class="keyword">JOIN</span> countries c</span><br><span class="line">			<span class="keyword">ON</span> c.country_code <span class="operator">=</span> m.country</span><br><span class="line">	<span class="keyword">WHERE</span> m.movie <span class="keyword">IN</span></span><br><span class="line">		(<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> c.movieid</span><br><span class="line">			<span class="keyword">FROM</span> credits c</span><br><span class="line">				<span class="keyword">INNER</span> <span class="keyword">JOIN</span> people p</span><br><span class="line">					<span class="keyword">ON</span> p.peopleid <span class="operator">=</span> c.peopleid</span><br><span class="line">			<span class="keyword">WHERE</span> c.credited_as <span class="operator">=</span> <span class="string">'A'</span></span><br><span class="line">				<span class="keyword">AND</span> p.birth_year <span class="operator">&gt;=</span> <span class="number">1970</span>)</span><br><span class="line">	<span class="keyword">ORDER</span> <span class="keyword">BY</span> c.country_name <span class="keyword">ASC</span>, m.year_released <span class="keyword">DESC</span>, m.title <span class="keyword">ASC</span></span><br></pre></td></tr></table></figure></div></p>
+<p>The specific ordering depends on the data type, e.g. the strings are
+sorted lexicographically. But it can be troublesome when
+<code>NULL</code>s are in the comparison. In this case, the ordering
+depends on specific behaviour of DBMS:</p>
+<ul>
+<li><code>NULL</code> is smaller than everything: SQL Server, MySQL,
+SQLite</li>
+<li><code>NULL</code> is greater than everything: DB2, Oracle,
+PostgreSQL</li>
+</ul>
+<p>Sometimes we may found the orderings of texts vary across different
+languages or cultures. To solve this, we need to use <em>collation</em>:
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- For PostgreSQL, SQL Server, MySQL</span></span><br><span class="line"><span class="keyword">CREATE TABLE</span> table_name(</span><br><span class="line">	some_text_column <span class="type">varchar</span>(<span class="number">100</span>)</span><br><span class="line">		<span class="keyword">COLLATE</span> collation_name <span class="keyword">NOT NULL</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- For Oracle</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> nls_sort(some_text_column, <span class="string">'collation_name'</span>)</span><br></pre></td></tr></table></figure></div></p>
+<p>Another problem is that when we want orderings other than the
+ascending and descending behavior. For example, to order the credit of
+people in movies: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">	<span class="keyword">CASE</span> credited_as</span><br><span class="line">		<span class="keyword">WHEN</span> <span class="string">'D'</span> <span class="keyword">THEN</span> <span class="number">1</span></span><br><span class="line">		<span class="keyword">WHEN</span> <span class="string">'P'</span> <span class="keyword">THEN</span> <span class="number">2</span></span><br><span class="line">		<span class="keyword">WHEN</span> <span class="string">'A'</span> <span class="keyword">THEN</span> <span class="number">3</span></span><br><span class="line">	<span class="keyword">END</span></span><br></pre></td></tr></table></figure></div></p>
+<p>Another problem is that we may need to retrieve only a “slice” of
+sorted data, e.g. successive pages on websites. We can leverage the
+<code>LIMIT</code> construct to achieve this: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- PostgreSQL, MySQL, SQLite</span></span><br><span class="line"><span class="keyword">SELECT</span> title, country, year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">ORDER</span> <span class="keyword">BY</span> title</span><br><span class="line">	LIMIT <span class="number">10</span></span><br><span class="line">	</span><br><span class="line"><span class="comment">-- DB2, Oracle, PostgreSQL</span></span><br><span class="line"><span class="keyword">SELECT</span> title, country, year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">ORDER</span> <span class="keyword">BY</span> title</span><br><span class="line">	<span class="keyword">FETCH</span> <span class="keyword">FIRST</span> <span class="number">10</span> <span class="keyword">ROWS</span> <span class="keyword">ONLY</span></span><br><span class="line">	</span><br><span class="line"><span class="comment">-- SQLServer</span></span><br><span class="line"><span class="keyword">SELECT</span> TOP <span class="number">10</span> title, country, year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies,</span><br><span class="line">	<span class="keyword">ORDER</span> <span class="keyword">BY</span> title</span><br></pre></td></tr></table></figure></div> If we want
+to “skip” the first few elements, we can use the <code>OFFSET</code>
+keyword: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- PostgreSQL, MySQL, SQLite</span></span><br><span class="line"><span class="keyword">SELECT</span> title, country, year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">ORDER</span> <span class="keyword">BY</span> title</span><br><span class="line">	LIMIT <span class="number">10</span> <span class="keyword">OFFSET</span> <span class="number">20</span></span><br><span class="line">	</span><br><span class="line"><span class="comment">-- DB2, Oracle, PostgreSQL</span></span><br><span class="line"><span class="keyword">SELECT</span> title, country, year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">ORDER</span> <span class="keyword">BY</span> title</span><br><span class="line">	<span class="keyword">OFFSET</span> <span class="number">20</span></span><br><span class="line">	<span class="keyword">FETCH</span> <span class="keyword">FIRST</span> <span class="number">10</span> <span class="keyword">ROWS</span> <span class="keyword">ONLY</span></span><br></pre></td></tr></table></figure></div></p>
+<p>There are also many cases when plain ordering isn’t satisfying. For
+example, messages in a forum thread can form a very complex hierarchy,
+i.e. tree-like data. DBMS is known to struggle when dealing with data
+like this. This is the well-known BOM (Bill Of Materials) problem.</p>
+<p>One way to solve this problem is by using the “materialized path”,
+turing the “ancestor” into a attribute.</p>
+<p>Oracle has implemented another solution by dynamic ordering:
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> message</span><br><span class="line">	<span class="keyword">FROM</span> forum_posts</span><br><span class="line">	<span class="keyword">CONNECT</span> <span class="keyword">BY</span> answered_postid <span class="operator">=</span> prior postid</span><br><span class="line">	<span class="keyword">START</span> <span class="keyword">WITH</span> answered_postid <span class="keyword">IS</span> <span class="keyword">NULL</span></span><br><span class="line">		<span class="keyword">AND</span> topicid <span class="operator">=</span> ...</span><br><span class="line">	<span class="keyword">ORDER</span> siblings <span class="keyword">BY</span> postid</span><br></pre></td></tr></table></figure></div></p>
+<p>Most DBMSs handle hierarchies through recursive queries.</p>
+<h2 id="window-functions">Window Functions</h2>
+<p>We have seen so far two kinds of functions:</p>
+<ul>
+<li><em>Scalar functions</em> that operate on values in the current
+row</li>
+<li><em>Aggregate function</em> that operate on sets of rows.</li>
+</ul>
+<p>The problem with aggregate functions is that they ignore details of
+data. If I ask for the year of the oldest movie per country, the
+database will only return a country and a year, and nothing else.</p>
+<p>If we want more details with aggregate functions, the only option is
+to join their output to the same table: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> a.country, a.title, a.year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies a</span><br><span class="line">		<span class="keyword">INNER</span> <span class="keyword">JOIN</span></span><br><span class="line">			(<span class="keyword">SELECT</span> country, <span class="built_in">min</span>(year_released) minyear</span><br><span class="line">				<span class="keyword">FROM</span> movies</span><br><span class="line">				<span class="keyword">GROUP</span> <span class="keyword">BY</span> country) b</span><br><span class="line">			<span class="keyword">ON</span> b.country <span class="operator">=</span> a.country</span><br><span class="line">				<span class="keyword">AND</span> b.minyear <span class="operator">=</span> a.year_released</span><br></pre></td></tr></table></figure></div> Window functions
+solve this problem by returning a result for a single row and computing
+the result on several rows. With DBMS products that support window
+functions, every aggregate function can be used as a window function:
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country, title, year_released,</span><br><span class="line">	<span class="built_in">min</span>(year_released)</span><br><span class="line">		<span class="keyword">OVER</span> (<span class="keyword">PARTITION</span> <span class="keyword">BY</span> country) earliest_year</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br></pre></td></tr></table></figure></div> Thus, this query returns two years for every movie:</p>
+<ul>
+<li>the release year</li>
+<li>earliest movie for the same country was released</li>
+</ul>
+<p>But this will return many unnecessary results. We need to limit
+output to those movies for which the year of release happens to be the
+same as the earliest one for their country: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> m.country, m.title, m.year_released</span><br><span class="line">	<span class="keyword">FROM</span> </span><br><span class="line">		(<span class="keyword">SELECT</span> country, title, year_released,</span><br><span class="line">			<span class="built_in">min</span>(year_released)</span><br><span class="line">				<span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> country) earliest_year</span><br><span class="line">			<span class="keyword">FROM</span> movies) m</span><br><span class="line">	<span class="keyword">WHERE</span> m.year_released <span class="operator">=</span> m.earliest_year</span><br></pre></td></tr></table></figure></div> Be careful
+that if we use filters in the inner query: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> m.country, m.title, m.year_released</span><br><span class="line">	<span class="keyword">FROM</span> </span><br><span class="line">		(<span class="keyword">SELECT</span> country, title, year_released,</span><br><span class="line">			<span class="built_in">min</span>(year_released)</span><br><span class="line">				<span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> country) earliest_year</span><br><span class="line">			<span class="keyword">FROM</span> movies</span><br><span class="line">			<span class="keyword">WHERE</span> title <span class="operator">!=</span> <span class="string">'example'</span>) m</span><br><span class="line">	<span class="keyword">WHERE</span> m.year_released <span class="operator">=</span> m.earliest_year</span><br></pre></td></tr></table></figure></div> it will return
+the second earliest movie! This is because the window functions are a
+<em>postprocessing function</em> on the result set. The corrected
+version is <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> m.country, m.title, m.year_released</span><br><span class="line">	<span class="keyword">FROM</span> </span><br><span class="line">		(<span class="keyword">SELECT</span> country, title, year_released,</span><br><span class="line">			<span class="built_in">min</span>(year_released)</span><br><span class="line">				<span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> country) earliest_year</span><br><span class="line">			<span class="keyword">FROM</span> movies) m</span><br><span class="line">	<span class="keyword">WHERE</span> m.year_released <span class="operator">=</span> m.earliest_year</span><br><span class="line">		<span class="keyword">AND</span> title <span class="operator">!=</span> <span class="string">'example'</span></span><br></pre></td></tr></table></figure></div></p>
+<p>Also note that we cannot “flatten” the nested query into one query.
+This is mainly because the <em>logical processing order</em> of SQL:</p>
+<ol type="1">
+<li><code>FROM</code>/<code>JOIN</code></li>
+<li><code>WHERE</code></li>
+<li><code>GROUP BY</code></li>
+<li><code>HAVING</code></li>
+<li>Window Functions</li>
+<li><code>SELECT</code></li>
+<li><code>ORDER BY</code></li>
+</ol>
+<p>Then if we try to move the window function to the outer query:
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country, title, year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> year_released <span class="operator">=</span> <span class="built_in">MIN</span>(year_released) <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> country)</span><br></pre></td></tr></table></figure></div> Since window functions are processed <em>after</em> the
+<code>WHERE</code> clause, this will cause the <code>WHERE</code> clause
+depends on unavailable data!</p>
+<p>Window functions always operate against rows that belong to a result
+set. One related characteristics is that they can only appear after the
+<code>SELECT</code>, not in the <code>WHERE</code> clause, and there is
+nothing with them similar to <code>HAVING</code> with aggregate
+functions.</p>
+<p>Window functions+<code>OVER</code> can be rewrite by using
+<code>GROUP BY</code>+<code>JOIN</code>: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> a.country, a.title, a.year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies a</span><br><span class="line">		<span class="keyword">INNER</span> <span class="keyword">JOIN</span></span><br><span class="line">			(<span class="keyword">SELECT</span> country, <span class="built_in">min</span>(year_released) earliest_year</span><br><span class="line">				<span class="keyword">FROM</span> movies</span><br><span class="line">				<span class="keyword">GROUP</span> <span class="keyword">BY</span> country) b</span><br><span class="line">			<span class="keyword">ON</span> b.country <span class="operator">=</span> a.country</span><br><span class="line">				<span class="keyword">AND</span> b.earliest_year <span class="operator">=</span> a.year_released</span><br><span class="line">	<span class="keyword">WHERE</span> a.title <span class="operator">!=</span> <span class="string">'example'</span></span><br></pre></td></tr></table></figure></div></p>
+<p>Similar to that we can have an aggregate function without a
+<code>GROUP BY</code> clause when we want only one result for the whole
+table, we can have an empty <code>OVER</code> clause to indicate that
+the window function should compute the result over all rows selected.
+This is frequently used in operations such as computing a value as a
+percentage of the total: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country_name, cnt <span class="keyword">as</span> number_of_movies,</span><br><span class="line">	   round(<span class="number">100</span> <span class="operator">*</span> cnt <span class="operator">/</span> <span class="built_in">sum</span>(cnt) <span class="keyword">over</span> (), <span class="number">0</span>) <span class="keyword">as</span> percentage</span><br><span class="line">	<span class="keyword">FROM</span> </span><br><span class="line">		(<span class="keyword">SELECT</span> c.country_name, <span class="built_in">coalesce</span>(m.cnt, <span class="number">0</span>) cnt</span><br><span class="line">			<span class="keyword">FROM</span> countries c</span><br><span class="line">				<span class="keyword">LEFT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> </span><br><span class="line">					(<span class="keyword">SELECT</span> country, <span class="built_in">count</span>(<span class="operator">*</span>) cnt</span><br><span class="line">						<span class="keyword">FROM</span> movies</span><br><span class="line">						<span class="keyword">GROUP</span> <span class="keyword">BY</span> country) m</span><br><span class="line">					<span class="keyword">ON</span> m.country <span class="operator">=</span> c.country_code) q</span><br><span class="line">	<span class="keyword">ORDER</span> <span class="keyword">BY</span> country_name</span><br></pre></td></tr></table></figure></div></p>
 
   <div class="note-large green">
     <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
@@ -689,138 +773,16 @@ not a relation because many rows cannot be distinguished.
 
     </div>
     <div class="notel-content markdown-body">
-      <p>If we need to do some operations with the query result, always try to
-accomplish it by using database.</p>
-
-    </div>
-  </div></p>
-<p>If we are only interested in the different countries, we can use the
-keyword <code>DISTINCT</code> <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> country <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> year_released<span class="operator">=</span><span class="number">2000</span></span><br></pre></td></tr></table></figure></div> Now the result set is a
-valid relation.</p>
-<p>If there are multiple columns after the keyword
-<code>DISTINCT</code>, them it will eliminate those rows where all
-selected fields are identical. <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> country, year_released <span class="keyword">FROM</span> movies <span class="keyword">WHERE</span> year_released <span class="keyword">IN</span> (<span class="number">2000</span>,<span class="number">2001</span>)</span><br></pre></td></tr></table></figure></div> The selected combination
-<code>(country, year_released)</code> will be identical.</p>
-<h2 id="aggregate-functions">Aggregate Functions</h2>
-<p>The aggregate function will aggregate all rows that share a feature
-and return a characteristic of each group of aggregated rows. It will be
-clearer with an example. To compute an aggregate result, we’ll first
-retrieve data. And then regroup all the data according to the values in
-one or several columns.</p>
-<p>For example, if we want to group by country, and for each country the
-aggregate function <code>COUNT(*)</code> says how many movies we have.
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country,</span><br><span class="line">	<span class="built_in">COUNT</span>(<span class="operator">*</span>) number_of_movies</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">GROUP</span> <span class="keyword">BY</span> country</span><br></pre></td></tr></table></figure></div> We can also group on several columns. <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country, year_released</span><br><span class="line">	<span class="built_in">COUNT</span>(<span class="operator">*</span>) number_of_movies</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">GROUP</span> <span class="keyword">BY</span> country, year_released</span><br></pre></td></tr></table></figure></div> Every
-column that isn’t an aggregate function and appears after
-<code>SELECT</code> must also appear after <code>GROUP BY</code>.</p>
-
-  <div class="note-large orange">
-    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
-      <p>Caution</p>
-
-    </div>
-    <div class="notel-content markdown-body">
-      <p>Beware of some performance implication. When we apply a simple
-<code>WHERE</code> filter, the DBMS can start returning rows as soon as
-a match is found. With a <code>GROUP BY</code>, the rows must be
-regrouped before the aggregate can take place. In other words, we need a
-preparatory phase that may take time, even if few rows are returned in
-the end.</p>
+      <p>When there is an <code>ORDER BY</code> clause we cannot start
+returning rows before you have seen all of them, so we may count them
+too when sorting, and the marginal cost of the window function is near
+zero.</p>
 
     </div>
   </div>
-<p>Common aggregate functions: -
-<code>COUNT(*)</code>/<code>COUNT(col)</code> - <code>MIN(col)</code> -
-<code>MAX(col)</code> - <code>AVG(col)</code> -
-<code>STDDEV()</code></p>
-<p>For example, to find the earliest release year by country:
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country,</span><br><span class="line">	<span class="built_in">MIN</span>(year_released) oldest_movie</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">GROUP</span> <span class="keyword">BY</span> country</span><br></pre></td></tr></table></figure></div> Since the result returned by <code>MIN</code> will be a
-relation, we can apply another relational operation to the result:
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line">	<span class="keyword">FROM</span> (</span><br><span class="line">		<span class="keyword">SELECT</span> country,</span><br><span class="line">			<span class="built_in">MIN</span>(year_released) oldest_movie</span><br><span class="line">			<span class="keyword">FROM</span> movies</span><br><span class="line">			<span class="keyword">GROUP</span> <span class="keyword">BY</span> country</span><br><span class="line">	) earliest_movies_per_country</span><br><span class="line">	<span class="keyword">WHERE</span> oldest_movie <span class="operator">&lt;</span> <span class="number">1940</span></span><br></pre></td></tr></table></figure></div> There is a short-hand that makes nesting queries
-unnecessary. We can have a condition on the result of an aggregate with
-<code>HAVING</code>: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country,</span><br><span class="line">	<span class="built_in">MIN</span>(year_released) oldest_movie</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">GROUP</span> <span class="keyword">BY</span> country</span><br><span class="line">	<span class="keyword">HAVING</span> <span class="built_in">MIN</span>(year_released) <span class="operator">&lt;</span> <span class="number">1940</span></span><br></pre></td></tr></table></figure></div> The two following queries are both
-valid in SQL and behaviorally equivalent: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country,</span><br><span class="line">	<span class="built_in">MIN</span>(year_released) oldest_movie</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">GROUP</span> <span class="keyword">BY</span> country,</span><br><span class="line">	<span class="keyword">HAVING</span> country<span class="operator">=</span><span class="string">'us'</span></span><br><span class="line">	</span><br><span class="line"><span class="keyword">SELECT</span> country,</span><br><span class="line">	<span class="built_in">MIN</span>(year_released) oldest_movie</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">WHERE</span> country<span class="operator">=</span><span class="string">'us'</span></span><br><span class="line">	<span class="keyword">GROUP</span> <span class="keyword">BY</span> country,</span><br></pre></td></tr></table></figure></div> But the
-efficient way is the second one. This is because it will first filter
-the result then aggregate them.</p>
-
-  <div class="note-large orange">
-    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
-      <p>Caution</p>
-
-    </div>
-    <div class="notel-content markdown-body">
-      <p>The query optimizers in different DBMS are very likely different. We
-must not rely the optimization that depends on a specifc DBMS. The most
-efficient query should always be chosen.</p>
-
-    </div>
-  </div>
-<p>The aggregate ignores <code>NULL</code>. In the following query, the
-<code>WHERE</code> condition changes nothing to th result: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">MAX</span>(died) most_recent_death</span><br><span class="line">	<span class="keyword">FROM</span> people</span><br><span class="line">	<span class="keyword">WHERE</span> died <span class="keyword">IS</span> <span class="keyword">NOT NULL</span></span><br></pre></td></tr></table></figure></div>
-We can also count distinct columns: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country,</span><br><span class="line">	<span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> year_released) number_of_years</span><br><span class="line">	<span class="keyword">FROM</span> movies</span><br><span class="line">	<span class="keyword">GROUP</span> <span class="keyword">BY</span> country</span><br></pre></td></tr></table></figure></div></p>
-<p>A complex example: find out how many people that are both actors
-(represented by the kind <code>'A'</code>) and directors (represented by
-the kind <code>'D'</code>). <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> peopleid, <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">AS</span> number_of_roles</span><br><span class="line">	<span class="keyword">FROM</span>(</span><br><span class="line">		<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> peopleid, credited_as</span><br><span class="line">			<span class="keyword">FROM</span> credits</span><br><span class="line">			<span class="keyword">WHERE</span> credited_as <span class="keyword">IN</span> (<span class="string">'A'</span>, <span class="string">'D'</span>)</span><br><span class="line">	)</span><br><span class="line">	<span class="keyword">GROUP</span> <span class="keyword">BY</span> peopleid</span><br><span class="line">	<span class="keyword">HAVING</span> <span class="built_in">count</span>(<span class="operator">*</span>)<span class="operator">=</span><span class="number">2</span></span><br></pre></td></tr></table></figure></div></p>
-<h2 id="retrieving-data-from-multiple-tables">Retrieving Data from
-Multiple Tables</h2>
-<p>In the building of complex queries, a important invariant that we
-need to maintain is that the result set return by those queries are
-valid relations, with no duplicates and a column that could be used as a
-key. This must hold at every stage in a query.</p>
-<p>To relate data from multiple tables, we need to use
-<code>JOIN</code>. For example, to retrieve country names by using the
-<code>country</code> column in the table <code>movies</code>, we can
-use: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> title, country_name, year_released</span><br><span class="line">	<span class="keyword">FROM</span> movies <span class="keyword">JOIN</span> countries</span><br><span class="line">	<span class="keyword">ON</span> country_code<span class="operator">=</span>country</span><br></pre></td></tr></table></figure></div> The <code>JOIN</code> operation will create a
-virtual table with all combinations between rows in the two tables. If
-table 1 has <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.339ex;" xmlns="http://www.w3.org/2000/svg" width="2.705ex" height="1.885ex" role="img" focusable="false" viewBox="0 -683 1195.6 833"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D445" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path></g><g data-mml-node="mn" transform="translate(792,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g></g></g></svg></mjx-container></span> rows, and table 2
-has <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.339ex;" xmlns="http://www.w3.org/2000/svg" width="2.705ex" height="1.885ex" role="img" focusable="false" viewBox="0 -683 1195.6 833"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D445" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path></g><g data-mml-node="mn" transform="translate(792,-150) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g></g></g></svg></mjx-container></span> rows, then the result
-virtual table will have <span class="math inline"><mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.339ex;" xmlns="http://www.w3.org/2000/svg" width="8.175ex" height="1.885ex" role="img" focusable="false" viewBox="0 -683 3613.6 833"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D445" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path></g><g data-mml-node="mn" transform="translate(792,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="mo" transform="translate(1417.8,0)"><path data-c="D7" d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z"></path></g><g data-mml-node="msub" transform="translate(2418,0)"><g data-mml-node="mi"><path data-c="1D445" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path></g><g data-mml-node="mn" transform="translate(792,-150) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g></g></g></svg></mjx-container></span> rows.</p>
-<p>In the query above, we use an <code>ON</code> filter to filter out
-unrelated rows to make a much smaller virtual table.</p>
-<p>If the two tables joined contain columns that has the same name, then
-it will be ambiguous to join on these columns. There is something called
-<em>natural join</em> (unsupported by SQLServer) that basically means
-“if a column has the same name, then we should join on it”. But It can
-be quite counterintuitive because it is based purely on names.</p>
-<p>We can solve the issue by <code>USING</code> (not supported by
-SQLServer either): <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> first_name, surname</span><br><span class="line">	<span class="keyword">FROM</span> people <span class="keyword">JOIN</span> credits <span class="keyword">USING</span> (peopleid)</span><br><span class="line">	<span class="keyword">WHERE</span> credited_as <span class="operator">=</span> <span class="string">'D'</span></span><br></pre></td></tr></table></figure></div> A much better solution is to
-explicitly write out the table names <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> first_name, surname</span><br><span class="line">	<span class="keyword">FROM</span> people <span class="keyword">JOIN</span> credits</span><br><span class="line">	<span class="keyword">ON</span> credits.peopleid <span class="operator">=</span> people.peopleid</span><br><span class="line">	<span class="keyword">WHERE</span> credited_as <span class="operator">=</span> <span class="string">'D'</span></span><br></pre></td></tr></table></figure></div> We can create short
-alias to shorten the query: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> first_name, surname</span><br><span class="line">	<span class="keyword">FROM</span> people <span class="keyword">AS</span> p <span class="keyword">JOIN</span> credits <span class="keyword">AS</span> c</span><br><span class="line">	<span class="keyword">ON</span> c.peopleid <span class="operator">=</span> p.peopleid</span><br><span class="line">	<span class="keyword">WHERE</span> credited_as <span class="operator">=</span> <span class="string">'D'</span></span><br></pre></td></tr></table></figure></div> 
-  <div class="note-large orange">
-    <div class="notel-title rounded-t-lg p-3 font-bold text-lg flex flex-row gap-2 items-center">
-      <p>Caution</p>
-
-    </div>
-    <div class="notel-content markdown-body">
-      <p>Most DBMS accept <code>people AS p</code> instead of
-<code>people p</code>, except Oracle.</p>
-
-    </div>
-  </div></p>
-<h2 id="more-about-join">More about <code>JOIN</code></h2>
-<p>A simple example of self join is if, for actor families, each row
-were containing the identifiers of the father and mother if they are in
-the database. You can display child and father. <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c.first_name <span class="operator">||</span> <span class="string">' '</span> <span class="operator">||</span> c.surname <span class="keyword">as</span> person,</span><br><span class="line">	   f.first_name <span class="operator">||</span> <span class="string">' '</span> <span class="operator">||</span> f.surname <span class="keyword">as</span> father</span><br><span class="line">	<span class="keyword">FROM</span> people <span class="keyword">AS</span> c <span class="keyword">JOIN</span> people <span class="keyword">AS</span> f</span><br><span class="line">	<span class="keyword">ON</span> f.peopleid <span class="operator">=</span> c.fatherid</span><br></pre></td></tr></table></figure></div> A
-<code>JOIN</code> can as well be applied to a virtual table returned
-from a query, as long as the result is a valid relation.</p>
-<p>We can also chain joins the same way we chain filtering conditions
-with <code>AND</code>. <code>JOIN</code>s between 10 or 15 tables aren’t
-uncommon, and queries generated by programs often do much worse.
-<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ... <span class="keyword">FROM</span> table1 </span><br><span class="line">	<span class="keyword">JOIN</span> table2</span><br><span class="line">		<span class="keyword">ON</span> ...</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">JOIN</span> tablen</span><br><span class="line">		<span class="keyword">ON</span> ... </span><br></pre></td></tr></table></figure></div> Let’s write a relatively simple query, say we want to
-retrieve all British movie titles with director names. Finding all the
-tables involved is simple enough. But trouble begins as soon as we start
-writing column names after <code>SELECT</code>: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> m.title, p.surname</span><br></pre></td></tr></table></figure></div> - The
-<code>title</code> comes from <code>movies</code>, and the
-<code>surname</code> comes from <code>people</code>. But is it a key? -
-Consider when two brothers co-direct a film, then the title and surname
-are definitely not unique. How to handle the situation of a movie with
-two directors? A easy and naive solution is to use
-<code>DISTINCT</code>: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> m.title, p.surname</span><br></pre></td></tr></table></figure></div> But it will lose much information.
-A better solution is to return everything that is required to be certain
-about uniqueness: <div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> m.year_released, m.title, p.first_name, p.surname</span><br><span class="line">	<span class="keyword">FROM</span> movies <span class="keyword">AS</span> m</span><br><span class="line">		<span class="keyword">INNER</span> <span class="keyword">JOIN</span> credits <span class="keyword">AS</span> c</span><br><span class="line">			<span class="keyword">ON</span> c.movieid <span class="operator">=</span> m.movieid</span><br><span class="line">		<span class="keyword">INNER</span> <span class="keyword">JOIN</span> people <span class="keyword">AS</span> p</span><br><span class="line">			<span class="keyword">ON</span> p.peopleid <span class="operator">=</span> c.peopleid</span><br><span class="line">		<span class="keyword">WHERE</span> c.credited_as <span class="operator">=</span> <span class="string">'D'</span> <span class="keyword">AND</span> m.country<span class="operator">=</span><span class="string">'gb'</span></span><br></pre></td></tr></table></figure></div> One important thing is that it better
-to start with the table for which we can select efficiently fewer rows
-before starting joining. Though in most situations this would not cause
-any performance differences, but we cannot rely on the specific behavior
-of the DBMS.</p>
+<p>We can rewrite the query by using a <code>CROSS JOIN</code>:
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> country_name, cnt <span class="keyword">as</span> number_of_movies,</span><br><span class="line">	   round(<span class="number">100</span> <span class="operator">*</span> cnt <span class="operator">/</span> t.movie_count, <span class="number">0</span>) <span class="keyword">as</span> percentage</span><br><span class="line">	<span class="keyword">FROM</span> </span><br><span class="line">		(<span class="keyword">SELECT</span> c.country_name, <span class="built_in">coalesce</span>(m.cnt, <span class="number">0</span>) cnt</span><br><span class="line">			<span class="keyword">FROM</span> countries c</span><br><span class="line">				<span class="keyword">LEFT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> </span><br><span class="line">					(<span class="keyword">SELECT</span> country, <span class="built_in">count</span>(<span class="operator">*</span>) cnt</span><br><span class="line">						<span class="keyword">FROM</span> movies</span><br><span class="line">						<span class="keyword">GROUP</span> <span class="keyword">BY</span> country) m</span><br><span class="line">					<span class="keyword">ON</span> m.country <span class="operator">=</span> c.country_code) q</span><br><span class="line">		<span class="keyword">CROSS</span> <span class="keyword">JOIN</span></span><br><span class="line">			(<span class="keyword">SELECT</span> <span class="built_in">count</span>(<span class="operator">*</span>) movie_count</span><br><span class="line">				<span class="keyword">FROM</span> movies) t</span><br><span class="line">	<span class="keyword">ORDER</span> <span class="keyword">BY</span> country_name</span><br></pre></td></tr></table></figure></div></p>
+<p>There are</p>
 
 		</div>
 
@@ -828,18 +790,18 @@ of the DBMS.</p>
 		<div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
 			<div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> Principles of Database Systems (H) Lecture 4 Notes</li>
+        <li><strong>Title:</strong> Principles of Database Systems (H) Lecture 6 Notes</li>
         <li><strong>Author:</strong> Zhige Chen</li>
         <li><strong>Created at
-                :</strong> 2025-09-29 14:00:24</li>
+                :</strong> 2025-10-21 22:03:57</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-10-10 13:10:58
+                    :</strong> 2025-10-21 22:14:39
             </li>
         
         <li>
-            <strong>Link:</strong> https://nofe1248.github.io/2025/09/29/dbh-04/
+            <strong>Link:</strong> https://nofe1248.github.io/2025/10/21/dbh-06/
         </li>
         <li>
             <strong>
@@ -877,12 +839,12 @@ of the DBMS.</p>
 		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
 			
 			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="prev" rel="prev" href="/2025/09/29/discrete-math-lec-5/">
+				<a class="prev" rel="prev" href="/2025/10/21/dsaa-lec-7/">
 					<span class="left arrow-icon flex justify-center items-center">
 						<i class="fa-solid fa-chevron-left"></i>
 					</span>
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item truncate max-w-48">Discrete Mathematics (H) Lecture 5 Notes</span>
+						<span class="post-nav-title-item truncate max-w-48">Data Structures and Algorithms (H) Lecture  Notes</span>
 						<span class="post-nav-item">Prev posts</span>
 					</span>
 				</a>
@@ -890,9 +852,9 @@ of the DBMS.</p>
 			
 			
 			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="next" rel="next" href="/2025/09/27/dsaa-lec-3/">
+				<a class="next" rel="next" href="/2025/10/15/pse-2/">
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item truncate max-w-48">Data Structures and Algorithms (H) Lecture 3 Notes</span>
+						<span class="post-nav-title-item truncate max-w-48">Probability and Statistics for Engineering Lecture 3-5 Notes</span>
 						<span class="post-nav-item">Next posts</span>
 					</span>
 					<span class="right arrow-icon flex justify-center items-center">
@@ -967,9 +929,8 @@ of the DBMS.</p>
 		<div class="post-toc-wrap">
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
-		<div class="page-title">Principles of Database Systems (H) Lecture 4 Notes</div>
-		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#advanced-queries"><span class="nav-text">Advanced Queries</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distinct"><span class="nav-text">DISTINCT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#aggregate-functions"><span class="nav-text">Aggregate Functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#retrieving-data-from-multiple-tables"><span class="nav-text">Retrieving Data from
-Multiple Tables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#more-about-join"><span class="nav-text">More about JOIN</span></a></li></ol></li></ol>
+		<div class="page-title">Principles of Database Systems (H) Lecture 6 Notes</div>
+		<ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#postprocessing-queries"><span class="nav-text">Postprocessing Queries</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sorting"><span class="nav-text">Sorting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#window-functions"><span class="nav-text">Window Functions</span></a></li></ol></li></ol>
 
 	</div>
 </div>
