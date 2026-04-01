@@ -232,4 +232,117 @@ $$
 
 ## Protectors in Tree Borrows
 
+The Rust compiler assumes that a reference passed as function argument is unique and immutable for the duration of that function call. This allows compiler to optimize the code like the following:
+
+```rust
+fn write_and_call(x: &mut i32, opaque: impl Fn()) {
+    // Since x is immutable and unique, the compiler can eliminate this write.
+    *x = 13;
+    opaque();
+    *x = 0;
+}
+```
+
+Although at the first glance Tree Borrows should be able to provide this guarantee. The actuall problem is that `opaque()` can never return:
+
+```rust
+let mut root = 42;
+let ptr1 = &mut root as *mut i32;
+let opaque = move || {
+    let ptr2 = ptr1;
+    println!("{}", unsafe { *ptr2 });
+    std::process::exit(0);
+};
+write_and_call(unsafe { &mut *ptr1 }, opaque);
+```
+
+$$
+#import "@preview/cetz:0.4.2": canvas, draw, tree
+
+#canvas({
+  import draw: *
+  set-style(content: (padding: 0.5em))
+  tree.tree(
+    ([`root`], ([`ptr1,ptr2`], [`x`])))
+})
+$$
+
+Here, `opaque` performs an access with a tag that is foreign to `x`, and then never returns. Applying the optimization will make the code print `42` instead of `13`. Also, this context does not exhibit UB: `x` transitions from `Unique` to `Frozen` due to the foreign read, and is never accessed again. To fix this, the paper proposes the introduction of *protectors*. The protectors will ensure the references do not get invalidated prematurely. This is done by making the program UB if a protected reference becomes `Disabled`. Also, when entering a function call, the references are implicitly reborrowed. The modified state machine is as follows:
+
+$$
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+
+#let fw = text(red)[$arrow.t W$]
+#let fr = text(red)[$arrow.t R$]
+#let lw = text(purple)[$arrow.b W$]
+#let lr = text(purple)[$arrow.b R$]
+
+#diagram(
+	spacing: 4em,
+    node((-1,0), [```rust &mut T```/```rust &mut Cell<T>```]),
+    edge((-1,0), (0,0), "->", dash:"dashed"),
+	node((0,0), [Reserved]),
+    edge((0,0), (1,0), lw, "->"),
+    edge((0,0), (0,0), lr, "->", bend: 120deg),
+    edge((0,0), (0,1), fr, "->", bend: -30deg),
+    edge((0,0), (2,2), fw, "->", bend: -10deg),
+	node((0,1), [Reserved (conflicted)]),
+    edge((0,1), (0,1), lr + fr, "->", bend: -120deg),
+    edge((0,1), (2,2), lw + fw, "->", bend: -30deg),
+    node((1,0), [Unique]),
+    edge((1,0), (2,2), fr + fw, "->"),
+    edge((1,0), (1,0), lr + lw, "->", bend: 120deg),
+    node((2,0), [Frozen]),
+    edge((2,0), (2,0), lr + fr, "->", bend: 120deg),
+    edge((2,0), (2,2), lw + fw, "->", bend: 30deg),
+    node((1,-1), [```rust &T```]),
+    edge((1,-1), (2,0), "->", dash:"dashed"),
+    node((2,2), [UB]),
+)
+$$
+
+Also, consider the optimization that Rust compiler can perform:
+
+```rust
+fn read_write(x: *const i32, y: &mut i32) -> i32 {
+    let val = unsafe { *x };
+    *y = 20;    // Optimization: move write up
+    val
+}
+```
+
+Without `Reserved (conflicted)` state, this will introduce UB when `x` and `y` alias. Since the write to `y` will change its state to `Unique`, and therefore the subsequent foreign read through `x` will not be permitted. Thus we must ensure that if a mutable reference is written to at any point of the function call, then there was no foreign read at any point during the call. This is captured by the `Reserved (conflicted)` state. A conflicted `Reserved` reference cannoy become `Unique`, and a local write to such a reference will trigger UB.
+
+### Implicit Accesses
+
+By establishing the invariant that tag of references outlive the function call, optimizations that introduce *spurious reads* (speculatively reading from a location) can be safely performed. For example:
+
+```rust
+fn repeat(x: &i32, n: usize, opaque: imp Fn(i32)) {
+    let val = *x;    // Optimization: speculatively read from x
+    for _ in 0..n {
+        opaque(*x);  // Optimization: use val instead of reading from x again
+    }
+}
+```
+
+However, if `n` is `0`, then the inserted read might trigger UB. To ensure that such optimizations cannot trigger UB, the paper proposes to *implicitly* read access the reference when they are reborrowed at the beginning of the function call. Also, we need implicit accesses at the expiry of the protectors, consider the following example:
+
+```rust
+fn write_opt(x: &mut i32, f: impl FnOnce(), g: impl FnOnce()) {
+    // x is protected
+    f();
+    *x = 10;    // Optimization: write 0
+    g();
+    *x = 0;     // Optimization: remove write
+}
+```
+
+When `g` runs, the Tree Borrows guarantee that `g` cannot observe the value of `x` since `g` cannot access to a reference/raw pointer derived from `x`. To prove that deleting the write is sound, the paper proposes the addition of *protector end semantics*: when a tag's protector expires:
+
+- All used `Reserved` or `Frozen` locations are subject to an implicit read.
+- All used `Unique` locations are subject to an implicit write.
+
+In both cases, the access is only applied to foreign tags.
+
 ## References
