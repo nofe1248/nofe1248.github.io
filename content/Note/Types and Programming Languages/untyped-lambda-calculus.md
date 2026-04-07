@@ -441,3 +441,85 @@ _Evaluation_:
 $$
 
 There are two kinds of rules: the *computation rule* $#smallcaps[E-AppAbs]$ and the *congruence rules* $#smallcaps[E-App1]$ and $#smallcaps[E-App2]$. Notice how the choice of metavariables in the rules helps control the order of evaluation.
+
+## Nameless Representation of Terms
+
+Using alpha-conversion or the convention we mentioned earlier, we can avoid variable capture. But this approach can complicate proofs and implementations. Alternative approaches include:
+
+1. Represent variables symbolically, but replace the convention about implicit renaming of bound variables with an operation that explicitly replaces bound variables with fresh names.
+2. Represent variables symbolically, but introduce a general condition that the names of all bound variables must all be different from each other and from any free variables we may use. This is also known as the *Barendregt convention*.
+3. Devise some canonical representation of variables and terms that does not require renaming at all.
+4. Introducing mechanisms such as *explicit substitutions* (see [@abadi1989explicit]).
+5. Avoid variables altogether by working in a language based directly on combinators, such as *combinatory logic*, or Backus' functional language FP.
+
+The 3rd approach is the most common adopted one in implementations of the lambda-calculus. Since when it is implemented wrong, it tends to fail catastrophically instead of subtly. More specifically, we can represent variables by their *de Bruijn indices*.
+
+The core idea is to making variable occurrences point *directly* to their binders, this is done by replacing named variables with natural numbers, where the number $k$ stands for 
+the variable bound by the $k$-th enclosing $lambda$.
+
+> [!example]
+> The ordinary term $lambda x. lambda y. x space (y space x)$ corresponds to the *nameless term* $lambda. lambda. 1 space (0 space 1)$.
+
+The nameless terms are also sometimes called *de Bruijn terms*.
+
+> [!info] Definition: Nameless Terms
+> Let $cal(T)$ be the smallest family of sets ${cal(T)_0, cal(T)_1, cal(T)_2, ...}$ s.t.
+> 1. $k in cal(T)_n$ whenever $0 <= k < n$;
+> 2. if $t_1 in cal(T)_n$ and $n > 0$, then $lambda. t_1 in cal(T)_{n-1}$;
+> 3. if $t_1 in cal(T)_n$ and $t_2 in cal(T)_n$, then $(t_1 space t_2) in cal(T)_n$.
+
+The elements of $cal(T)_n$ are terms with *at most* $n$ free variables, numbered between $0$ and $n-1$. A given element of $cal(T)_n$ need not have free variables with all these numbers. When $t$ is closed, it will be an element of $cal(T)_n$ for every $n$. Each closed ordinary term has just one de Bruijn representation, and two ordinary terms are equivalent modulo renaming of bound variables iff they have the same de Bruijn representation.
+
+To deal with open terms, we need to define the *naming context*. Suppose we want to represent $lambda x. y space x$ as a nameless term, but we don't know how to represent the free variable $y$. The solution is to choose an assignment (naming context) of de Bruijn indices to free variables. For example, under the following naming context:
+
+$$
+Gamma = cases(
+  x |-> 4,
+  y |-> 3,
+  z |-> 2,
+  a |-> 1,
+  b |-> 0,
+)
+$$
+
+$lambda w. y space w$ would be represented as $lambda . 4 space 0$.
+
+Since the order in which the variables appear in $Gamma$ determines their numerial indices, we can write it compactly as a sequence:
+
+> [!info] Definition: Naming Context
+> Suppose $x_0$ through $x_n$ are variable names from $cal(V)$. The naming context $Gamma=x_n,x_(n-1),...,x_1,x_0$ assigns to each $x_i$ the de Bruijn index $i$. Note that the rightmost variable in the sequence is given the index $0$; this matches the way we count $lambda$ binders when converting a named term to nameless form. We write $italic("dom")(Gamma)$ for the set ${x_n,...,x_0}$ of variable names mentioned in $Gamma$.
+
+In practice, we will usually have some fixed naming context $Gamma$; then we will abuse the notation slightly and write $t in cal(T)$ to mean $t in cal(T)_n$ where $n$ is the length of $Gamma$.
+
+### Shifting and Substitution
+
+When a substitution goes under a $lambda$-abstraction, e.g. $[1 |-> s](lambda . 2)$, the context in which the substitution is taking place becomes one variable longer than the original; we need to increment the indices of the free variables in $s$ so that they keep referring to the same names in the new context. But we cannot simply shift every variable index up by one, because this will also shift *bound* variables. So the shifting function need to take a "cutoff" parameter $c$ that controls which variables should be shifted. It starts off at $0$ and gets incremented by one every time the shifting function goes through a $lambda$.
+
+> [!info] Definition: Shifting
+> The $d$-place shift of a term $t$ above cutoff $c$, written $scripts(arrow.t)^d_c (t)$, is defined as follows:
+>$$
+>&scripts(arrow.t)^d_c (k)&= cases(
+>  k &"if" space k < c,
+>  k + d &"if" space k >= c,
+>)\
+>&scripts(arrow.t)^d_c (lambda. t_1) &= lambda. scripts(arrow.t)^d_(c+1) (t_1)\
+>&scripts(arrow.t)^d_c (t_1 space t_2) &= scripts(arrow.t)^d_c (t_1) space scripts(arrow.t)^d_c (t_2)
+>$$
+> We write $scripts(arrow.t)^d (t)$ for $$scripts(arrow.t)^d_0 (t)$$.
+
+So when calculating $scripts(arrow.t)^d_c (t)$, we know that the term $t$ comes from inside $c$ binders in the original argument to $scripts(arrow.t)^d$. Therefore all identifiers $k<c$ in $t$ are bound in the original argument and should not be shifted, while all identifiers $k>=c$ in $t$ are free in the original argument and should be shifted.
+
+When we use subtitution, we will usually be interested in substituting the *last* variable in the context, since that is the case we need in order to define the operation of beta-reduction. However, to substitute for variable $0$ in a term that happens to be a $lambda$-abstraction, we need to be able to substitute for the variable numbered $1$ in its body. Thus, the definition of substitution must work on an arbitrary variable.
+
+> [!info] Definition: Substitution
+> The substitution of a term $s$ for variable number $j$ in a term $t$, written $[j |-> s] (t)$, is defined as follows:
+>$$
+>&[j |-> s] (k) &= cases(
+>  s &"if" space k = j,
+> k &"otherwise",
+> ) \
+>&[j |-> s] (lambda. t_1) &= lambda. [j+1 |-> scripts(arrow.t)^1 (s)] (t_1) \
+>&[j |-> s] (t_1 space t_2) &= [j |-> s] (t_1) space [j |-> s] (t_2)
+>$$
+
+## References
