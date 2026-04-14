@@ -522,4 +522,18 @@ When we use subtitution, we will usually be interested in substituting the *last
 >&[j |-> s] (t_1 space t_2) &= [j |-> s] (t_1) space [j |-> s] (t_2)
 >$$
 
+### Evaluation
+
+The only subtle point in the evaluation of nameless terms is that reducing a redex consumes the bound variable, e.g. $((lambda x . t_(12)) space v_2) -> [x |-> v_2]t_(12)$. Thus, we will need to renumber the variables of the result of substitution to take into account the fact that $x$ is no longer part of the context. For example:
+
+$$
+(lambda . 1 space 0 space 2) space (lambda . 0) --> 0 space (lambda . 0) space 1
+$$
+
+Similarly, we also need to shift the variables in $v_2$ up by $1$ before substituting into $t_(12)$, since $t_(12)$ is defined in a larger context than $v_2$. So the beta-reduction rule is:
+
+$$
+(lambda . t_(12)) space v_2 --> scripts(arrow.t)^(-1) ([0 |-> scripts(arrow.t)^1 (v_2)] (t_(12)))
+$$
+
 ## References
