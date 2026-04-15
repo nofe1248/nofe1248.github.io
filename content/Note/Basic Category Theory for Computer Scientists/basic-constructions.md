@@ -199,7 +199,7 @@ Most definitions comse in pairs, e.g., product/coproduct, equalizer/coequalizer,
 Moreover, any statement about categories can be transformed into a dual statement $S^"op"$ by exchaning "domain" and "codomain" and replacing each composite $g compose f$ by $f compose g$. If $S$ is true for $upright("C")$, then by definition $S^"op"$ is true of $upright("C")^"op"$. The is known as the *duality principle*.
 
 > [!info] Definition: Product Category
-> For any pair of categories $upright("C")$ and $upright("D")$, the *produce category* $upright("C") times upright("D")$ has as objects pairs $(A,B)$ of a $upright("C")$-object $A$ and a $upright("D")$-object $B$ and as arrows pairs $(f,g)$ of a $upright("C")$-arrow $f$ and a $upright("D")$-arrow $g$. Composition and identity arrows are defined pairewise.
+> For any pair of categories $upright("C")$ and $upright("D")$, the *product category* $upright("C") times upright("D")$ has as objects pairs $(A,B)$ of a $upright("C")$-object $A$ and a $upright("D")$-object $B$ and as arrows pairs $(f,g)$ of a $upright("C")$-arrow $f$ and a $upright("D")$-arrow $g$. Composition and identity arrows are defined pairewise.
 
 > [!info] Definition: Category of Arrows
 > $upright("C")^->$ is the *category of arrows* of $upright("C")$. The objects of $upright("C")^->$ are the arrows in $upright("C")$. An arrow in $upright("C")^->$ from $f:A->B$ to $f':A'->B'$ is defined to be a pair $(a,b)$ of $upright("C")$-arrows $a:A->A'$ and $b:B->B'$ s.t. $f' compose a = b compose f$. The composition of $upright("C")^->$-arrows
@@ -217,3 +217,190 @@ Moreover, any statement about categories can be transformed into a dual statemen
 > 1. each object of $upright("B")$ is an object of $upright("C")$;
 > 2. for all $upright("B")$-objects $B$ and $B'$, $upright("B")(B,B') subset.eq upright("C")(B,B')$;
 > 3. composition and identity arrows in $upright("B")$ are those in $upright("C")$.
+
+## Diagrams
+
+> [!info] Definition: Diagram
+> A *diagram* in a category $upright(C)$ is a collection of vertices and directed edged, consistently labeled with objects and arrows of $upright(C)$, i.e., if an edge is labled with an arrow $f$ and $f$ has domain $A$ and codomain $B$, then the endpoints of this edge must be labeled with $A$ and $B$ respectively.
+
+Diagrams *in* categories are not to be confused with diagrams *of* categories, which are graphs whose vertices and edges are labeled with categories and functors respectively.
+
+> [!info] Definition: Commutative Diagram
+> A diagram in a category $upright(C)$ is said to *commute* if, for every pair of vertices $X$ and $Y$, all the paths in the diagram from $X$ to $Y$ are equal, in the sense that each path in the diagram determines an arrow and these arrows are equal in $upright(C)$.
+
+For example, the diagram
+$$
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+
+#diagram(spacing: 2cm, {
+ let (X, Z, W, Y) = ((0,0), (1,0),(0,1),(1,1))
+ node(X, $X$)
+ node(Z, $Z$)
+ node(W, $W$)
+ node(Y, $Y$)
+
+ edge(X, Z, $f'$, "->")
+ edge(W, Y, $f$, "->")
+ edge(X, W, $g'$, "->")
+ edge(Z, Y, $g$, "->")
+})
+$$
+commutes if $f compose g' = g compose f'$
+
+A useful refinement of this convention is to require that two paths be equal only when at least one of them contains more than one arrow. For example, the commutativity of the diagram
+$$
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+
+#diagram(spacing: 2cm, {
+ let (X, Y, Z) = ((0,0), (1,0),(2,0))
+ node(X, $X$)
+ node(Z, $Z$)
+ node(Y, $Y$)
+
+ edge(X, Y, $f$, "->", shift: -3pt)
+ edge(X, Y, $g$, "->", shift: 3pt, label-side: right)
+ edge(Y, Z, $h$, "->")
+})
+$$
+means $h compose f = h compose g$ but not necessarily $f=g$.
+
+Definition can be simplified by using diagrams, e.g., considering the following restated definition:
+
+> [!info] Definition: Category of Arrows (Restated)
+> Each $upright(C)$-arrow $f:A -> B$ is an object in the category $upright(C)^->$. A $upright(C)^->$-arrow from $f:A -> B$ to $f':A' -> B'$ is a pair $(a,b)$ of $upright(C)$-arrows s.t. the diagram
+> $$
+> #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+> 
+> #diagram(spacing: 2cm, {
+>  let (A, A_, B, B_) = ((0,0), (1,0),(0,1),(1,1))
+>  node(A, $A$)
+>  node(A_, $A'$)
+>  node(B, $B$)
+>  node(B_, $B'$)
+> 
+>  edge(A, A_, $a$, "->")
+>  edge(B, B_, $b$, "->")
+>  edge(A, B, $f$, "->")
+>  edge(A_, B_, $f'$, "->")
+> })
+> $$
+> commutes in $upright(C)$. The composition of the $upright(C)^->$-arrows $(a,b):(f:A->B)->(f':A'->B')$ and $(a',b'):(f':A'->B')->(f'':A''->B'')$ is $(a',b') compose (a,b) = (a' compose a, b' compose b)$, which corresponds to the diagram formed by connecting together two commutative diagrams of the above form:
+> $$
+> #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+> 
+> #diagram(spacing: 2cm, {
+>  let (A, A_, A__, B, B_, B__) = ((0,0), (1,0), (2,0), (0,1), (1,1), (2,1))
+>  node(A, $A$)
+>  node(A_, $A'$)
+>  node(B, $B$)
+>  node(B_, $B'$)
+>  node(A__, $A''$)
+>  node(B__, $B''$)
+> 
+>  edge(A, A_, $a$, "->")
+>  edge(B, B_, $b$, "->")
+>  edge(A, B, $f$, "->")
+>  edge(A_, B_, $f'$, "->")
+>  edge(A__, B__, $f''$, "->")
+>  edge(A_, A__, $a'$, "->")
+>  edge(B_, B__, $b'$, "->")
+> })
+> $$
+
+> [!success] Proposition
+> If both inner squares of the following diagram commute, then so does the outer rectangle:
+> $$
+> #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+> 
+> #diagram(spacing: 2cm, {
+>  let (A, B, C, A_, B_, C_) = ((0,0), (1,0), (2,0), (0,1), (1,1), (2,1))
+>  node(A, $A$)
+>  node(A_, $A'$)
+>  node(B, $B$)
+>  node(B_, $B'$)
+>  node(C, $C$)
+>  node(C_, $C'$)
+> 
+>  edge(A, B, $f$, "->")
+>  edge(B, C, $f'$, "->")
+>  edge(A_, B_, $g$, "->")
+>  edge(B_, C_, $g'$, "->")
+>  edge(A, A_, $a$, "->")
+>  edge(B, B_, $b$, "->")
+>  edge(C, C_, $c$, "->")
+> })
+> $$
+
+An application of commutative diagrams in computer science is to validate the program transformations in which the order of operations is permuted.
+
+## Monomorphisms, Epimorphisms, and Isomorphisms
+
+> [!info] Definition: Monomorphism
+> An arrow $f:B->C$ in a category $upright(C)$ is a *monomorphism* (or is *monic*) if, for any pair of $upright(C)$-arrows $g:A->B$ and $h:A->B$, the equality $f compose g=f compose h$ implies $g=h$. (left-cancellability)
+
+The monomorphisms in $upright("Set")$ are exactly the injective functions.
+
+> [!info] Definition: Epimorphism
+> An arrow $f:A->B$ in a category $upright(C)$ is an *epimorphism* (or is *epic*) if, for any pair of arrows $g:B->C$ and $h:B->C$, the equality $g compose f=h compose f$ implies $g=h$. (right-cancellability)
+
+The epimorphisms in $upright("Set")$ are exactly the surjective functions.
+
+For an intuitive explanation of this connection, we need to first observe that:
+
+- The set theory looks *inside* of things, and it cares about specific elements.
+- The category theory looks *outside* of things (the *relationship* between things). It doesn't know what an element is; it only observes how entire functions (arrows) behave when you chain them together.
+
+So we must reinvent "injective" and "surjective" in terms of the behavior of arrows, more specifically, how the arrows interact with other arrows.
+
+For injectivity/monomorphism:
+
+- From set theory: A function never "combine" two distinct input into the same output, i.e. we never lose information.
+- From category theory: If we have two arrows $g$ and $h$ that are different (so they output different results upon some input), then when we compose them with a monomorphism $f$, they will still be different.
+
+For surjectivity/epimorphism:
+
+- From set theory: A function covers all possible outputs, i.e., we never have "unreached" elements in the codomain.
+- From category theory: If an arrow $f$ has "unreached" elements in its codomain, then the results of $g compose f$ and $h compose f$ will probably be the same, even if $g$ and $h$ are different. So if $f$ is an epimorphism, then for any two arrows $g$ and $h$, if $g compose f$ and $h compose f$ are the same, then $g$ and $h$ must be the same.
+
+We can see the monomorphisms and epimorphisms as an abstract generalization of injective and surjective functions. However, this does no hold in general. Consider the category $upright("Mon")$ of monoids and two monoids $(bb(Z),+,0),(bb(N),+,0)$. The inclusion function $i:(bb(N),+,0)->(bb(Z),+,0)$ that maps each nonnegative integer $z$ to the integer $z$ is a monomorphism. But $i$ is also an epimorphism, although it is not surjective. 
+
+To show this, assume that $f compose i = g compose i$ for two homomorphisms $f,g$ from $(bb(Z),+,0)$ to some monoid $(M,*,e)$. Take any $z in bb(Z)$. If $z >= 0$, then it is the image under $i$ of the same $z$ considered as an element of $bb(N)$, so
+$$
+f(z)=f(i(z))=g(i(z))=g(z).
+$$
+If $z < 0$, then $-z >= 0$ and $-z in bb(N)$, so
+$$
+f(z) &= f(z) * E\
+&= f(z) * g(0)\
+&= f(z) * g(-z + z)\
+&= f(z) * (g(-z) * g(z))\
+&= (f(z) * g(-z)) * g(z)\
+&= (f(z) * g(i(-z))) * g(z)\
+&= (f(z) * f(i(-z))) * g(z)\
+&= (f(z) * f(-z)) * g(z)\
+&= f(z + (-z)) * g(z)\
+&= f(0) * g(z)\
+&= E * g(z)\
+&= g(z).
+$$
+
+Since $f(z)=g(z)$ for all $z$, we have $f=g$. Thus, $i$ is an epimorphism.
+
+> [!info] Definition: Isomorphism
+> An arrow $f:A->B$ is an *isomorphism* if there is an arrow $f^(-1):B->A$, called the *inverse* of $f$, s.t. $f compose f^(-1) = "id"_B$ and $f^(-1) compose f = "id"_A$. The objects $A$ and $B$ are said to be *isomorphic* if such an isomorphism exists.
+>
+> Two objects that are isomorphic are often said to be identical *up to isomorphism* or *within an isomorphism*. Similarly, an object $A$ with some property $P$ is said to be *unique up to isomorphism* if, for any object $B$ with property $P$, $A$ and $B$ are isomorphic.
+
+> [!example]
+> A group corresponds to a one-object category where every arrow is an isomorphism.
+
+Explanation:
+
+- The single object of the category corresponds to the underlying set of the group.
+- The arrows of the category correspond to the elements of the group.
+- The composition of arrows corresponds to the group operation.
+- The identity arrow corresponds to the identity element of the group.
+- The inverse of an arrow corresponds to the inverse of a group element.
+- The associativity of composition corresponds to the associativity of the group operation.
+
+## Initial and Terminal Objects
