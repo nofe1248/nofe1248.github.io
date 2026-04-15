@@ -404,3 +404,103 @@ Explanation:
 - The associativity of composition corresponds to the associativity of the group operation.
 
 ## Initial and Terminal Objects
+
+> [!info] Definition: Initial Object
+> An object $0$ is called an *initial object* if, for every object $A$, there is exactly one arrow from $0$ to $A$.
+
+> [!info] Definition: Terminal Object
+> An object $1$ is called a *terminal object* or *final object* if, for every object $A$, there is exactly one arrow from $A$ to $1$.
+
+Arrows from an initial object or to a terminal object are often labeled "!" to highlight their uniqueness.
+
+> [!example]
+> In $upright("Set")$, the initial object is the empty set $emptyset$ (the empty function is the unique function from $emptyset$ to any set $S$) and the terminal objects are all one-element sets, e.g. ${x}$ (for each set $S$ there is a function from $S$ to ${x}$).
+
+> [!example]
+> In $Omega upright("-Alg")$, the initial object is the *initial algebra* (or *term algebra*) whose carrier consists of all finite trees where each node is labeled with an operator $omega in Omega$ and where each node labeled with $omega$ has exactly $"ar"(omega)$ subtrees. The unique homomorphism from the term algebra to another $Omega$-algebra is a *semantic interpretation function*.
+
+The terminal objects is a category-theoretic analogue of the *elements* of the sets. In the sense of the observation that, in $upright("Set")$, the functions from a singleton set to a set $S$ are in one-to-one correspondence with the elements of $S$ (since the function can only be defined by picking an element from $S$). And if $x$ is an element of $S$, considered as an arrow $x:1->S$ from some singleton set $1$, and $f$ is a function from $S$ to some other set $T$, then the element $f(x)$ is the unique element of $T$ that is in the image of the composite function $f compose x$.
+
+An arrow from a terminal object to an object $S$ is called a *global element* or *constant* of $S$.
+
+## Products and Coproducts
+
+To extend the notion of Cartesian product to category theory, we need to find a way to characterize the Cartesian product of two sets $A$ and $B$ without referring to the elements of $A$ and $B$. Observe that when we form a product of two sets $A,B$ we also define *projection functions* $pi_1:A times B -> A$ and $pi_2:A times B -> B$. In fact, for the set of all tuples of the form $(X,f_1,f_2)$, where $X$ is a set and $f_1:X->A$ and $f_2:X->B$ are functions, $(A times B, pi_1, pi_2)$ is an *optimal* representative of this set.
+
+To show this, assume that for some set $C$, there are two functions $f:C->A$ and $g:C->B$.Then we can form a *product function* $angle.l f,g angle.r:C->A times B$ defined as $angle.l f,g angle.r(x)=(f(x),g(x))$. The functions $f$ and $g$ can be recovered from $angle.l f,g angle.r$ by composing it with the projection functions $f=pi_1 compose angle.l f,g angle.r$ and $g=pi_2 compose angle.l f,g angle.r$. Moreover, $angle.l f,g angle.r$ is the only function from $C$ to $A times B$ that has this property.
+
+Of course, $(B times A,pi_2,pi_1)$ is also optimal. But since $A times B$ and $B times A$ are the same up to an isomorphism. In categorical terms we can say that they are essentially the same.
+
+> [!info] Definition: Product
+> A *product* of two objects $A$ and $B$ is an object $A times B$, together with two *projection arrows* $pi_1:A times B -> A$ and $pi_2:A times B -> B$, s.t. for any object $C$ and pair of arrows $f:C->A$ and $g:C->B$ there is exactly one *mediating arrow* $angle.l f,g angle.r:C->A times B$ making the diagram
+> $$
+> #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+> 
+> #diagram(spacing: 2cm, {
+>  let (C, A, B, AB) = ((0,0), (-1,1), (1,1), (0,1))
+>  node(A, $A$)
+>  node(B, $B$)
+>  node(C, $C$)
+>  node(AB, $A times B$)
+> 
+>  edge(C, A, $f$, "->")
+>  edge(C, B, $g$, "->")
+>  edge(AB, A, $pi_1$, "->")
+>  edge(AB, B, $pi_2$, "->")
+>  edge(C, AB, $angle.l f,g angle.r$, "->", "dashed")
+> })
+> $$
+> commute, i.e., $pi_1 compose angle.l f,g angle.r = f$ and $pi_2 compose angle.l f,g angle.r = g$.
+
+Any object isomorphic to a product object $A times B$ is a product of $A$ and $B$.
+
+If a category $upright(C)$ has a product $A times B$ for every pair of objects $A$ and $B$, we say that $upright(C)$ *has all (binary) products* (or simply *has products*). It is often convenient to choose a particular object $A times B$ for each pair of objects. In this case, we asy that $A times B$ is the *distinguished product* of $A$ and $B$, and that $upright(C)$ *has distinguished/specified/chosen products*.
+
+We can define arrows between product objects in terms of projection arrows:
+
+> [!note] Definition: Product Map
+> If $A times C$ and $B times D$ are product objects, then for every pair of arrows $f:A->B$ and $g:C->D$, the *product map* $f times g:A times C -> B times D$ is the arrow $angle.l f compose pi_1, g compose pi_2 angle.r$.
+
+The dual notion coproduct corresponds to set-theoretic disjoint union:
+
+> [!info] Definition: Coproduct
+> A *coproduct* of two objects $A$ and $B$ is an object $A+B$, together with two injection arrows $iota_1:A->A+B$ and $iota_2:B->A+B$, s.t. for any object $C$ and pair of arrows $f:A->C$ and $g:B->C$ there is exactly one arrow $[f,g]:A+B->C$ making the following diagram commute:
+> $$
+> #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+> 
+> #diagram(spacing: 2cm, {
+>  let (C, A, B, AB) = ((0,1), (-1,0), (1,0), (0,0))
+>  node(A, $A$)
+>  node(B, $B$)
+>  node(C, $C$)
+>  node(AB, $A+B$)
+> 
+>  edge(A, C, $f$, "->", label-side: right)
+>  edge(B, C, $g$, "->", label-side: left)
+>  edge(A, AB, $iota_1$, "->")
+>  edge(B, AB, $iota_2$, "->")
+>  edge(AB, C, $[f,g]$, "->", "dashed")
+> })
+> $$
+
+The categorical constructions can be generalized to arbitrary indexed products and coproducts.
+
+> [!info] Definition: Indexed Product
+> A *product* of a family of objects $(A_i)_(i in I)$ indexed by a set $I$ consists of an object $product_(i in I)A_i$ and a family of projection arrows $(pi_i:(product_(i in I)A_i)->A_i)_(i in I)$ s.t. for each object $C$ and family of arrows $(f_i:C->A_i)_(i in I)$ there is a unique arrow $angle.l f_i angle.r_(i in I):C->(product_(i in I)A_i)$ s.t. the following diagram commutes for each $i in I$:
+> $$
+> #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+> 
+> #diagram(spacing: 2cm, {
+>  let (C, AIP, AI) = ((0,0), (0,1), (1,1))
+>  node(AIP, $product_(i in I)A_i$)
+>  node(AI, $A_i$)
+>  node(C, $C$)
+> 
+>  edge(C, AI, $f_i$, "->")
+>  edge(AIP, AI, $pi_i$, "->")
+>  edge(C, AIP, $angle.l f_i angle.r_(i in I)$, "->", "dashed")
+> })
+> $$
+> i.e., $pi_i compose angle.l f_i angle.r_(i in I) = f_i$ for each $i in I$.
+
+## Universal Constructions
